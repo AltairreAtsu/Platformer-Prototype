@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e120ea35e9e1069459f46c7a25c75d8c, type: 3}
+  m_Name: PlayerSettings
+  m_EditorClassIdentifier: 
+  defaultGravityScale: 1.4
+  maxGroundSpeed: 1000
+  groundCheckRadius: 0.05
+  groundedJumpForce: {x: 0, y: 750}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 256
+  maxAirSpeed: 400
+  doubleJumpDelaySeconds: 0.1
+  glidingGravity: 0.8
+  doubleJumpForce: {x: 0, y: 750}
+  wallClimbSpeed: 1500
+  wallCheckRadius: 0.1
+  wallGripThreshold: 0.1
+  wallJumpForce: {x: 100, y: 750}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 256
