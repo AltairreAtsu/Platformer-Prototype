@@ -15,6 +15,9 @@ public class PlayerMovement : MonoBehaviour {
 	private PlayerInput userInput;
 	private bool facingRight = true;
 
+	public delegate void OnLandEvent();
+	public event OnLandEvent LandEvent;
+
 	public Animator Animator { get; private set; }
 	public Rigidbody2D RigidBody2d { get; private set; }
 	public bool FacingRight
@@ -75,6 +78,7 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		currentState = Grounded;
 		Animator.SetBool("AirBorne", false);
+		if (LandEvent != null) { LandEvent(); }
 	}
 	public void TransitionGroundToClimb()
 	{
