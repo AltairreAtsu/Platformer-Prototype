@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAudio : MonoBehaviour {
 	[SerializeField] private AudioClip jumpSound = null;
 	[SerializeField] private AudioClip dashSound = null;
+	[SerializeField] private AudioClip landSound = null;
 
 	private AudioSource audioSource;
 	private PlayerMovement playerMovement;
@@ -16,6 +17,7 @@ public class PlayerAudio : MonoBehaviour {
 
 		playerMovement.jumpEvent += OnJump;
 		playerMovement.dashEvent += OnDash;
+		playerMovement.LandEvent += OnLand;
 	}
 
 	private void OnJump ()
@@ -27,6 +29,12 @@ public class PlayerAudio : MonoBehaviour {
 	private void OnDash()
 	{
 		audioSource.clip = dashSound;
+		audioSource.Play();
+	}
+
+	private void OnLand()
+	{
+		audioSource.clip = landSound;
 		audioSource.Play();
 	}
 

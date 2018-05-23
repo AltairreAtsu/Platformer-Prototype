@@ -22,6 +22,7 @@ public class MusicPlayer : MonoBehaviour
 		originalAudioVolume = audioSource.volume;
 
 		SceneManager.activeSceneChanged += OnSceneChange;
+
 		audioSource.clip = musicTracks[SceneManager.GetActiveScene().buildIndex];
 		if (!audioSource.isPlaying) { audioSource.Play(); }
 	}
@@ -31,14 +32,19 @@ public class MusicPlayer : MonoBehaviour
 		var SceneClip = musicTracks[next.buildIndex];
 		if(next.name == menuSceneName)
 		{
-			audioSource.clip = SceneClip;
-			audioSource.loop = true;
-			audioSource.Play();
+			DoMainMenuTransition(SceneClip);
 		}
 		else
 		{
 			StartTransition(SceneClip, sceneChangeTrnasitionTime, sceneChangeTransitionSteps);
 		}
+	}
+
+	private void DoMainMenuTransition(AudioClip SceneClip)
+	{
+		audioSource.clip = SceneClip;
+		audioSource.loop = true;
+		audioSource.Play();
 	}
 
 	public void StartTransition (AudioClip toClip, float time, float steps)

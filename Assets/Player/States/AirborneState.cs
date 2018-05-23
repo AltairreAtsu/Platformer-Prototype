@@ -11,9 +11,7 @@ public class AirborneState : PlayerMovementState {
 
 	private bool gliding = false;
 
-	private Vector2 dashVector = new Vector2(600, 0f);
-	private float lastDashTime = 0f;
-	private float dashCoolDownSeconds = 0.5f;
+
 
 	public AirborneState(PlayerMovement playerMovement, PlayerSettings PlyrSttings)
 	{
@@ -42,7 +40,7 @@ public class AirborneState : PlayerMovementState {
 		if (jump && hasDoubleJump && doubleJumpAvailable)
 			Jump();
 
-		if (dash && Time.time - lastDashTime > dashCoolDownSeconds)
+		if (dash && Time.time - PlyrSttings.LastDashTime > PlyrSttings.DashCooldownSeconds)
 			Dash();
 	}
 
@@ -97,14 +95,14 @@ public class AirborneState : PlayerMovementState {
 	{
 		if (playerMovement.FacingRight)
 		{
-			playerMovement.RigidBody2d.AddForce(dashVector);
+			playerMovement.RigidBody2d.AddForce(PlyrSttings.DashVector);
 		}
 		else
 		{
-			playerMovement.RigidBody2d.AddForce(dashVector * -1);
+			playerMovement.RigidBody2d.AddForce(PlyrSttings.DashVector * -1);
 		}
-		lastDashTime = Time.time;
-		playerMovement.AirDash();
+		PlyrSttings.LastDashTime = Time.time;
+		playerMovement.Dash();
 	}
 
 	private void CheckGlide(bool glide)

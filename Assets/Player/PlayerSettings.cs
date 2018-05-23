@@ -25,6 +25,11 @@ public class PlayerSettings : ScriptableObject {
 	[SerializeField] private Vector2 wallJumpForce = new Vector2(0f, 10f);
 	[SerializeField] private LayerMask whatIsWall;
 
+	[Header ("Dash Variables")]
+	[SerializeField] private Vector2 dashVector = new Vector2(600, 0f);
+	[SerializeField] private float lastDashTime = 0f;
+	[SerializeField] private float dashCoolDownSeconds = 0.5f;
+
 	private Transform groundCheckPoint;
 	private Transform wallCheckPoint;
 
@@ -47,4 +52,13 @@ public class PlayerSettings : ScriptableObject {
 	public float WallGripThreshold { get { return wallGripThreshold; } }
 	public Vector2 WallJumpForce { get { return wallJumpForce; } }
 	public LayerMask WhatIsWall { get { return whatIsWall; } }
+
+	public Vector2 DashVector { get { return dashVector; } }
+	public float LastDashTime { get { return lastDashTime; } set { lastDashTime = value; } }
+	public float DashCooldownSeconds { get { return dashCoolDownSeconds; } }
+
+	private void OnEnable()
+	{
+		lastDashTime = 0f;
+	}
 }

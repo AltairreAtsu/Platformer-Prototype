@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour {
 		
 	}
 
-	public void AirDash()
+	public void Dash()
 	{
 		if(dashEvent != null) { dashEvent(); }
 	}

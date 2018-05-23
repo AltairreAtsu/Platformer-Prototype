@@ -6,10 +6,6 @@ public class GroundedState : PlayerMovementState {
 	private PlayerMovement playerMovement;
 	private PlayerSettings PlyrSttings;
 
-	private Vector2 dashVector = new Vector2(600, 0f);
-	private float lastDashTime = 0f;
-	private float dashCoolDownSeconds = 0.5f;
-
 	public GroundedState (PlayerMovement playerMovement, PlayerSettings PlyrSttings)
 	{
 		this.playerMovement = playerMovement;
@@ -25,7 +21,7 @@ public class GroundedState : PlayerMovementState {
 
 		Move(horizontalThrow, verticalThrow);
 
-		if (dash && (Time.time - lastDashTime < dashCoolDownSeconds) )
+		if (dash && (Time.time - PlyrSttings.LastDashTime > PlyrSttings.DashCooldownSeconds) )
 			Dash();
 		if(jump) Jump();
 	}
@@ -66,13 +62,14 @@ public class GroundedState : PlayerMovementState {
 	{
 		if (playerMovement.FacingRight)
 		{
-			playerMovement.RigidBody2d.AddForce(dashVector);
+			playerMovement.RigidBody2d.AddForce(PlyrSttings.DashVector);
 		}
 		else
 		{
-			playerMovement.RigidBody2d.AddForce(dashVector * -1);
+			playerMovement.RigidBody2d.AddForce(PlyrSttings.DashVector * -1);
 		}
-		lastDashTime = Time.time;
+		PlyrSttings.LastDashTime = Time.time;
+		playerMovement.Dash();
 	}
 
 	private void Jump()
