@@ -409,7 +409,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00006866455, y: -9}
+  m_AnchoredPosition: {x: -0.000061035156, y: -9}
   m_SizeDelta: {x: -21.8, y: -43.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &105426847
@@ -459,7 +459,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 192.25
+  m_fontSize: 191.65
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1092,7 +1092,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 149.6
+  m_fontSize: 117.75
   m_fontSizeBase: 149
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2683,7 +2683,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
-      m_ColliderType: 1
+      m_ColliderType: 0
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 3
@@ -2868,10 +2868,10 @@ RectTransform:
   m_Father: {fileID: 1677494935}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1462.7, y: 0.0014353}
-  m_SizeDelta: {x: 207.9, y: 217}
+  m_AnchorMin: {x: 0.92264444, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.050048828, y: -0.000038146973}
+  m_SizeDelta: {x: -8.100098, y: -19}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &500794777
 MonoBehaviour:
@@ -4573,7 +4573,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.8, y: 1}
+  m_AnchorMax: {x: 0.8333333, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5083,7 +5083,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 149.35
+  m_fontSize: 96.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7211,8 +7211,8 @@ RectTransform:
   m_Father: {fileID: 1780923569}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.8, y: 0}
-  m_AnchorMax: {x: 0.8, y: 1}
+  m_AnchorMin: {x: 0.8333333, y: 0}
+  m_AnchorMax: {x: 0.8333333, y: 1}
   m_AnchoredPosition: {x: 61.5, y: 0}
   m_SizeDelta: {x: 123, y: -21.1}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8391,7 +8391,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 148.95
+  m_fontSize: 119.05
   m_fontSizeBase: 149
   m_fontWeight: 400
   m_enableAutoSizing: 1

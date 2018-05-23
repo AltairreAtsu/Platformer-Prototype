@@ -14,7 +14,7 @@ public class GroundLandVFX : MonoBehaviour {
 		playerMovement.LandEvent += OnLand;
 	}
 
-	private void OnLand()
+	private void OnLand(PhysicsMaterial2D material)
 	{
 		animator.SetTrigger("Land");
 		transform.position = playerMovement.transform.position;

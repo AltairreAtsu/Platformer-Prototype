@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerAudio : MonoBehaviour {
 	[SerializeField] private AudioClip jumpSound = null;
 	[SerializeField] private AudioClip dashSound = null;
-	[SerializeField] private AudioClip landSound = null;
+	[SerializeField] private AudioClip landSoundDefault = null;
 
 	private AudioSource audioSource;
 	private PlayerMovement playerMovement;
@@ -32,10 +32,21 @@ public class PlayerAudio : MonoBehaviour {
 		audioSource.Play();
 	}
 
-	private void OnLand()
+	private void OnLand(PhysicsMaterial2D material)
 	{
-		audioSource.clip = landSound;
-		audioSource.Play();
+		if (material == null)
+		{
+			audioSource.clip = landSoundDefault;
+			audioSource.Play();
+			return;
+		}
+
+		if (material.name == "Bouncy")
+		{
+			audioSource.clip = jumpSound;
+			audioSource.Play();
+			return;
+		}
 	}
 
 	private void OnDisable()

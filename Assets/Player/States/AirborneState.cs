@@ -75,7 +75,8 @@ public class AirborneState : PlayerMovementState {
 		{
 			hasDoubleJump = true;
 			if(gliding) StopGliding();
-			playerMovement.TransitionAirToGround();
+			// TODO Give Materials Priorities over other Materials
+			playerMovement.TransitionAirToGround(colliders[0].sharedMaterial);
 			return true;
 		}
 		return false;

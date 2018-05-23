@@ -14,11 +14,12 @@ public class PlayerMovement : MonoBehaviour {
 	private PlayerInput userInput;
 	private bool facingRight = true;
 
-	public delegate void PlayerMovementEvemt();
+	public delegate void PlayerMovementEvent();
+	public delegate void PlayerLandEvent (PhysicsMaterial2D material);
 
-	public event PlayerMovementEvemt LandEvent;
-	public event PlayerMovementEvemt jumpEvent;
-	public event PlayerMovementEvemt dashEvent;
+	public event PlayerLandEvent LandEvent;
+	public event PlayerMovementEvent jumpEvent;
+	public event PlayerMovementEvent dashEvent;
 
 	public Animator Animator { get; private set; }
 	public Rigidbody2D RigidBody2d { get; private set; }
@@ -80,11 +81,11 @@ public class PlayerMovement : MonoBehaviour {
 		currentState.EnterState();
 		Animator.SetBool("AirBorne", true);
 	}
-	public void TransitionAirToGround()
+	public void TransitionAirToGround(PhysicsMaterial2D material)
 	{
 		currentState = Grounded;
 		Animator.SetBool("AirBorne", false);
-		if (LandEvent != null) { LandEvent(); }
+		if (LandEvent != null) { LandEvent(material); }
 	}
 	public void TransitionGroundToClimb()
 	{
