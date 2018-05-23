@@ -78,6 +78,7 @@ public class GroundedState : PlayerMovementState {
 	private void Jump()
 	{
 		playerMovement.RigidBody2d.AddForce(PlyrSttings.GroundJumpForce);
+		playerMovement.Jumping();
 	}
 
 	private void Move(float horizontalThrow, float verticalThrow)

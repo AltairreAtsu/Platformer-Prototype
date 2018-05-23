@@ -90,6 +90,7 @@ public class AirborneState : PlayerMovementState {
 
 		rigidBody2d.velocity = new Vector2(rigidBody2d.velocity.x, 0f);
 		rigidBody2d.AddForce(PlyrSttings.DoubleJumpForce);
+		playerMovement.Jumping();
 	}
 
 	private void Dash()

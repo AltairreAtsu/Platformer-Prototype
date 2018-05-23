@@ -10,7 +10,17 @@ public class AirDash : MonoBehaviour {
 	[SerializeField] private float scaleStep = 0.1f;
 	[SerializeField] private float timeStepSeconds = 0.1f;
 
-	public IEnumerator DoDash ()
+	private void Start()
+	{
+		GameObject.FindWithTag("Player").GetComponent<PlayerMovement>().dashEvent += StartDash;
+	}
+
+	private void StartDash()
+	{
+		StartCoroutine(DashCoroutine());
+	}
+
+	private IEnumerator DashCoroutine ()
 	{
 		airDashSpriteRender.enabled = true;
 		transform.localScale = new Vector3(startXScale, 1f, 1f);

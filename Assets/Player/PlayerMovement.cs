@@ -9,14 +9,16 @@ public class PlayerMovement : MonoBehaviour {
 	private PlayerMovementState currentState;
 
 	[SerializeField] PlayerSettings playerSettings;
-	[SerializeField] AirDash airDash;
 	[SerializeField] SpriteRenderer glideSpriteRender;
 
 	private PlayerInput userInput;
 	private bool facingRight = true;
 
-	public delegate void OnLandEvent();
-	public event OnLandEvent LandEvent;
+	public delegate void PlayerMovementEvemt();
+
+	public event PlayerMovementEvemt LandEvent;
+	public event PlayerMovementEvemt jumpEvent;
+	public event PlayerMovementEvemt dashEvent;
 
 	public Animator Animator { get; private set; }
 	public Rigidbody2D RigidBody2d { get; private set; }
@@ -61,11 +63,15 @@ public class PlayerMovement : MonoBehaviour {
 
 	public void AirDash()
 	{
-		airDash.StartCoroutine(airDash.DoDash());
+		if(dashEvent != null) { dashEvent(); }
 	}
 	public void Glide(bool glide)
 	{
 		glideSpriteRender.enabled = glide;
+	}
+	public void Jumping()
+	{
+		if(jumpEvent != null) { jumpEvent(); }
 	}
 
 	public void TransitionGroundToAir()

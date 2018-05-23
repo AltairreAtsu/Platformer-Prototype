@@ -102,10 +102,12 @@ public class ClimbingState : PlayerMovementState
 		if (playerMovement.FacingRight)
 		{	
 			playerMovement.RigidBody2d.AddForce(new Vector2(PlyrSttings.WallJumpForce.x * -1, PlyrSttings.WallJumpForce.y));
+			playerMovement.Jumping();
 		}
 		else
 		{
 			playerMovement.RigidBody2d.AddForce(PlyrSttings.WallJumpForce);
+			playerMovement.Jumping();
 		}
 	}
 }
