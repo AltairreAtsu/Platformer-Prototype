@@ -4,110 +4,45 @@ using UnityEngine;
 
 public class ClimbingState : PlayerMovementState
 {
-	private PlayerMovement playerMovement;
+	private PlayerMovement player;
 	private PlayerSettings PlyrSttings;
-
-	private bool touchingGround = false;
 
 	public ClimbingState(PlayerMovement playerMovement, PlayerSettings PlyrSttings)
 	{
-		this.playerMovement = playerMovement;
+		this.player = playerMovement;
 		this.PlyrSttings = PlyrSttings;
 	}
 
 	public void EnterState()
 	{
-		playerMovement.RigidBody2d.gravityScale = 0;
+		player.SetGravityScale(0f);
+		player.SetBothConstraints();
+
+		player.SnapToWall();
 	}
-
-	public void Update(float horizontalThrow, float verticalThrow, bool jump, bool dash, bool glide)
+	private void ExitState()
 	{
-		touchingGround = false;
+		player.SetGravityToOriginal();
+		player.ResetConstraints();
 
-		CheckGroundCollision();
-		if( CheckWallCollision(horizontalThrow) ) return;
-
-		Move(horizontalThrow, verticalThrow);
-		if (jump)
-			Jump();
-	}
-
-	private bool CheckWallCollision(float horizontalThrow)
-	{
-		Collider2D[] wallColliders =
-			Physics2D.OverlapCircleAll(PlyrSttings.WallCheckPoint.position, PlyrSttings.WallCheckRadius, PlyrSttings.WhatIsWall);
-
-		if (wallColliders.Length > 0)
+		if (player.IsTouchingGround())
 		{
-			return CheckIsGrippingWall(horizontalThrow);
-		}
-		else if (wallColliders.Length == 0)
-		{
-			TransitionOutOfState();
-			return true;
-		}
-		return false;
-	}
-
-	private bool CheckIsGrippingWall(float horizontalThrow)
-	{
-		var facingRightAndGripping = (playerMovement.FacingRight && horizontalThrow > PlyrSttings.WallGripThreshold);
-		var facingLeftAndGriping = (!playerMovement.FacingRight && horizontalThrow < PlyrSttings.WallGripThreshold * -1);
-
-		if (!facingRightAndGripping && !facingLeftAndGriping)
-		{
-			TransitionOutOfState();
-			return true;
-		}
-		return false;
-	}
-
-	private void CheckGroundCollision()
-	{
-		Collider2D[] groundColliders =
-			Physics2D.OverlapCircleAll(PlyrSttings.GroundCheckPoint.position, PlyrSttings.GroundCheckRadius, PlyrSttings.WhatIsGround);
-
-		if (groundColliders.Length < 0)
-		{
-			Debug.Log("Touching Ground!");
-			touchingGround = true;
-		}
-	}
-
-	private void TransitionOutOfState()
-	{
-		if (touchingGround)
-		{
-			playerMovement.RigidBody2d.gravityScale = PlyrSttings.DefaultGravityScale;
-			playerMovement.TransitionClimbToGround();
+			player.TransitionClimbToGround();
 		}
 		else
 		{
-			playerMovement.RigidBody2d.gravityScale = PlyrSttings.DefaultGravityScale;
-			playerMovement.TransitionClimbToAir();
+			player.TransitonClimbToAir();
 		}
 	}
 
-	public void Move(float horizontalThrow, float verticalThrow)
+	public void Update()
 	{
-		var rigidBody2d = playerMovement.RigidBody2d;
-		//rigidBody2d.velocity = new Vector2(0f, verticalThrow * PlyrSttings.WallClimbSpeed * Time.deltaTime);
-
-
-		rigidBody2d.AddForce(new Vector2(0f, verticalThrow * PlyrSttings.WallClimbSpeed * Time.deltaTime));
-	}
-
-	private void Jump ()
-	{
-		if (playerMovement.FacingRight)
-		{	
-			playerMovement.RigidBody2d.AddForce(new Vector2(PlyrSttings.WallJumpForce.x * -1, PlyrSttings.WallJumpForce.y));
-			playerMovement.Jumping();
-		}
-		else
+		if( !player.IsGrippingWall())
 		{
-			playerMovement.RigidBody2d.AddForce(PlyrSttings.WallJumpForce);
-			playerMovement.Jumping();
+			ExitState();
 		}
+
+		player.WallClimb(PlyrSttings.WallClimbSpeed);
+		player.WallJump(PlyrSttings.WallJumpForce);
 	}
 }

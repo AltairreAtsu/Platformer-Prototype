@@ -22,10 +22,10 @@ MonoBehaviour:
   doubleJumpDelaySeconds: 0.1
   glidingGravity: 0.55
   doubleJumpForce: {x: 0, y: 750}
-  wallClimbSpeed: 1500
+  wallClimbSpeed: 800
   wallCheckRadius: 0.1
   wallGripThreshold: 0.1
-  wallJumpForce: {x: 100, y: 750}
+  wallJumpForce: {x: 200, y: 750}
   whatIsWall:
     serializedVersion: 2
     m_Bits: 256
