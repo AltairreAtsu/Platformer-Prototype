@@ -19,16 +19,17 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   maxAirSpeed: 400
-  doubleJumpDelaySeconds: 0.1
+  jumpCoolDown: 0.1
+  glideBreakCoolDown: 0.2
   glidingGravity: 0.55
   doubleJumpForce: {x: 0, y: 750}
   wallClimbSpeed: 800
   wallCheckRadius: 0.1
+  wallSnapRaycastDistance: 0.2
   wallGripThreshold: 0.1
   wallJumpForce: {x: 200, y: 750}
   whatIsWall:
     serializedVersion: 2
     m_Bits: 256
   dashVector: {x: 600, y: 0}
-  lastDashTime: 0
   dashCoolDownSeconds: 0.5

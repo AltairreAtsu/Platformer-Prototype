@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAudio : MonoBehaviour {
-	[SerializeField] private AudioClip jumpSound = null;
-	[SerializeField] private AudioClip dashSound = null;
-	[SerializeField] private AudioClip landSoundDefault = null;
+	[SerializeField] private AudioPlayer jumpSoundPlayer;
+	[SerializeField] private AudioPlayer dashSoundPlayer;
+	[SerializeField] private AudioPlayer landSoundGrassPlayer;
 
 	private AudioSource audioSource;
 	private PlayerMovement playerMovement;
@@ -15,6 +15,10 @@ public class PlayerAudio : MonoBehaviour {
 		audioSource = GetComponent<AudioSource>();
 		playerMovement = GetComponent<PlayerMovement>();
 
+		jumpSoundPlayer.audioSource = audioSource;
+		dashSoundPlayer.audioSource = audioSource;
+		landSoundGrassPlayer.audioSource = audioSource;
+
 		playerMovement.jumpEvent += OnJump;
 		playerMovement.dashEvent += OnDash;
 		playerMovement.LandEvent += OnLand;
@@ -22,29 +26,25 @@ public class PlayerAudio : MonoBehaviour {
 
 	private void OnJump ()
 	{
-		audioSource.clip = jumpSound;
-		audioSource.Play();
+		jumpSoundPlayer.Play();
 	}
 
 	private void OnDash()
 	{
-		audioSource.clip = dashSound;
-		audioSource.Play();
+		dashSoundPlayer.Play();
 	}
 
 	private void OnLand(PhysicsMaterial2D material)
 	{
 		if (material == null)
 		{
-			audioSource.clip = landSoundDefault;
-			audioSource.Play();
+			landSoundGrassPlayer.Play();
 			return;
 		}
 
 		if (material.name == "Bouncy")
 		{
-			audioSource.clip = jumpSound;
-			audioSource.Play();
+			jumpSoundPlayer.Play();
 			return;
 		}
 	}

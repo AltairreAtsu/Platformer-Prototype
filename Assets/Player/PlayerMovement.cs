@@ -12,10 +12,13 @@ public class PlayerMovement : MonoBehaviour {
 
 	[SerializeField] PlayerSettings playerSettings;
 	[SerializeField] SpriteRenderer glideSpriteRender;
+	[SerializeField] private Checkpoint checkpoint;
 
 	private PlayerInput userInput;
 	private PhysicsMaterial2D groundMaterial;
 	private bool facingRight = true;
+	
+	private float worldBottomThreshold = -10f;
 
 	private bool gliding = false;
 	private float glideBreakTime = 0f;
@@ -72,6 +75,26 @@ public class PlayerMovement : MonoBehaviour {
 
 		Animator.SetFloat("Speed", Mathf.Abs(userInput.HorizontalThrow));
 		Animator.SetFloat("VerticalSpeed", RigidBody2d.velocity.y);
+
+		if (FellOutOfWorld())
+		{
+			// Loose health / life and restart from Checkpoint
+			Teleport(checkpoint.transform.position);
+		}
+	}
+
+	private bool FellOutOfWorld()
+	{
+		if(transform.position.y < worldBottomThreshold)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public void SetCheckPoint(Checkpoint checkpoint)
+	{
+		this.checkpoint = checkpoint;
 	}
 
 	private void Flip()
