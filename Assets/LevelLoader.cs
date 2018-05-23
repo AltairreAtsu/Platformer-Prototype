@@ -34,6 +34,11 @@ public class LevelLoader : MonoBehaviour {
 		StartCoroutine(LoadLevel(level));
 	}
 
+	public void Quit()
+	{
+		Application.Quit();
+	}
+
 	private IEnumerator LoadMainMenuFromSplashScreen()
 	{
 		yield return new WaitForSeconds(splashScreenDelay);

@@ -151,7 +151,7 @@ MonoBehaviour:
   musicTracks:
   - {fileID: 8300000, guid: 18b9b236c56c77a499f95a130e8d4871, type: 3}
   - {fileID: 8300000, guid: 690ce7070f5c2c94c81a7a5101a6b0e7, type: 3}
-  - {fileID: 8300000, guid: df66f964bb884394888353044e859c8c, type: 3}
+  - {fileID: 8300000, guid: 18b9b236c56c77a499f95a130e8d4871, type: 3}
   sceneChangeTrnasitionTime: 1
   sceneChangeTransitionSteps: 10
   menuSceneName: 

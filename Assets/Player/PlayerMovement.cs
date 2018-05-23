@@ -75,6 +75,11 @@ public class PlayerMovement : MonoBehaviour {
 		if(jumpEvent != null) { jumpEvent(); }
 	}
 
+	public void Teleport (Vector3 positionTo)
+	{
+		transform.position = positionTo;
+	}
+
 	public void TransitionGroundToAir()
 	{
 		currentState = Airborne;

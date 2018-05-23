@@ -47,9 +47,15 @@ TagManager:
   - name: Foreground Props
     uniqueID: 3800205121
     locked: 0
+  - name: Foreground Ground
+    uniqueID: 3184919973
+    locked: 0
   - name: FX
     uniqueID: 964316541
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Overlay
+    uniqueID: 1920734655
     locked: 0
