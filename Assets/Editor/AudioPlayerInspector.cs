@@ -82,8 +82,7 @@ public class AudioPlayerInspector : Editor {
 			{
 				InstantiateTestSource();
 			}
-			myTarget.audioSource = TestSource;
-			myTarget.Play();
+			myTarget.Play(TestSource);
 			
 		}
 	}

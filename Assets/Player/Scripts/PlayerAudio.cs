@@ -8,14 +8,9 @@ public class PlayerAudio : MonoBehaviour {
 	[SerializeField] private AudioPlayer dashSoundPlayer;
 	[SerializeField] private AudioPlayer glideSoundPlayer;
 	[SerializeField] private AudioPlayer dieSoundPlayer;
-	[SerializeField] private AudioPlayer landSoundGrassPlayer;
-	[SerializeField] private AudioPlayer landSoundWoodPlayer;
-	[SerializeField] private AudioPlayer walkSoundGrassPlayer;
-	[SerializeField] private AudioPlayer walkSoundWoodPlayer;
-	[SerializeField] private PlayerSettings playerSettings;
 
-	[SerializeField] private RuleTile GrassTile;
-	[SerializeField] private RuleTile WoodTile;
+	[SerializeField] private PlayerSettings playerSettings;
+	[SerializeField] private SurfacManager surfaceManager;
 
 	private AudioSource audioSource;
 	private PlayerMovement playerMovement;
@@ -25,8 +20,6 @@ public class PlayerAudio : MonoBehaviour {
 		audioSource = GetComponent<AudioSource>();
 		playerMovement = GetComponent<PlayerMovement>();
 
-		InjectAudioSource(jumpSoundPlayer, dashSoundPlayer, glideSoundPlayer, dieSoundPlayer, landSoundGrassPlayer, landSoundWoodPlayer, walkSoundGrassPlayer, walkSoundWoodPlayer);
-
 		playerMovement.jumpEvent += OnJump;
 		playerMovement.dashEvent += OnDash;
 		playerMovement.glideEvent += OnGlide;
@@ -34,51 +27,34 @@ public class PlayerAudio : MonoBehaviour {
 		playerMovement.dieEvent += OnDie;
 	}
 
-	private void InjectAudioSource(params AudioPlayer[] audioPlayers)
-	{
-		for (int i = 0; i < audioPlayers.Length; i++)
-		{
-			audioPlayers[i].audioSource = audioSource;
-		}
-	}
-
 	public void PlayWalkSound()
 	{
 		var tile = playerMovement.GetSurfaceBeneath();
 		if(tile == null) { return;  }
-		switch (tile.name)
-		{
-			case "Wood":
-				walkSoundWoodPlayer.Play();
-				break;
-			case "Grass and Stone":
-			default:
-				walkSoundGrassPlayer.Play();
-				break;
-		}
-		
-		// TODO Unbind this form gras and add logic to switch step sound based on material
-		//walkSoundGrassPlayer.Play();
+
+		var surface = surfaceManager.GetSurface(tile.name);
+		if(surface == null) { return; }
+		surface.PlayWalkSound(audioSource);
 	}
 
 	private void OnJump ()
 	{
-		jumpSoundPlayer.Play();
+		jumpSoundPlayer.Play(audioSource);
 	}
 
 	private void OnDash()
 	{
-		dashSoundPlayer.Play();
+		dashSoundPlayer.Play(audioSource);
 	}
 
 	private void OnGlide()
 	{
-		glideSoundPlayer.Play();
+		glideSoundPlayer.Play(audioSource);
 	}
 
 	private void OnDie()
 	{
-		dieSoundPlayer.Play();
+		dieSoundPlayer.Play(audioSource);
 	}
 
 	private void OnLand(PhysicsMaterial2D material)
@@ -89,21 +65,15 @@ public class PlayerAudio : MonoBehaviour {
 
 			if (tile == null) { return; }
 
-			switch (tile.name)
-			{
-				case "Wood":
-					landSoundWoodPlayer.Play();
-					break;
-				case "Grass and Stone":
-				default:
-					landSoundGrassPlayer.Play();
-					break;
-			}
+			var surface = surfaceManager.GetSurface(tile.name);
+			if (surface == null) { return; }
+			surface.PlayLandSound(audioSource);
 		}
-		else if (material.name == "Bouncy")
+		else
 		{
-			jumpSoundPlayer.Play();
-			return;
+			var surface = surfaceManager.GetSurface(material);
+			if (surface == null) { return; }
+			surface.PlayLandSound(audioSource);
 		}
 	}
 

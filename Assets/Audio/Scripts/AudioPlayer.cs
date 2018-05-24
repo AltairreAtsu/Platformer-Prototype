@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Audio Player", menuName = "Platformer/Audio Player")]
 public class AudioPlayer : ScriptableObject
 {
-	[HideInInspector] public AudioSource audioSource;
-
 	[SerializeField] private AudioClip[] clips;
 
 	[HideInInspector] [SerializeField] public float minPitch = -1;
@@ -14,7 +12,7 @@ public class AudioPlayer : ScriptableObject
 	[HideInInspector] [SerializeField] public float maxVolume = 1;
 	[HideInInspector] [SerializeField] public float minVolume = 0;
 
-	public void Play()
+	public void Play(AudioSource audioSource)
 	{
 		audioSource.clip = (clips.Length > 1) ? clips[Random.Range(0, clips.Length - 1)] : clips[0];
 		audioSource.pitch = Random.Range(minPitch, maxPitch);
