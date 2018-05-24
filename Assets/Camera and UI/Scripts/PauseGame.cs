@@ -7,6 +7,13 @@ public class PauseGame : MonoBehaviour {
 	[SerializeField] private GameObject PausePanel;
 	public static bool GAME_PAUSED = false;
 
+	private Animator animator;
+
+	private void Start()
+	{
+		animator = GetComponent<Animator>();
+	}
+
 	private void Update()
 	{
 		if (CrossPlatformInputManager.GetButtonDown("Escape"))
@@ -22,18 +29,27 @@ public class PauseGame : MonoBehaviour {
 		}
 	}
 
+	public void SetPanelActive()
+	{
+		PausePanel.SetActive(true);
+	}
+	public void SetPanelInactive()
+	{
+		PausePanel.SetActive(false);
+	}
+
 	public void Pause()
 	{
 		GAME_PAUSED = true;
 		Time.timeScale = 0f;
-		PausePanel.SetActive(true);
+		animator.SetTrigger("SlideIn");
 	}
 
 	public void Resume()
 	{
 		GAME_PAUSED = false;
 		Time.timeScale = 1f;
-		PausePanel.SetActive(false);
+		animator.SetTrigger("SlideOut");
 	}
 
 	private void OnDestroy()

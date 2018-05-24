@@ -154,5 +154,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 18b9b236c56c77a499f95a130e8d4871, type: 3}
   sceneChangeTrnasitionTime: 1
   sceneChangeTransitionSteps: 10
-  menuSceneName: 
-  menuTransitionTime: 0.5
+  menuSceneName: Menu
