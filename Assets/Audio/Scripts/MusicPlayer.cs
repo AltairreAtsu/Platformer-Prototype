@@ -36,7 +36,6 @@ public class MusicPlayer : MonoBehaviour
 		else
 		{
 			StartTransition(SceneClip, sceneChangeTrnasitionTime, sceneChangeTransitionSteps);
-			print("Smoothly transition!");
 		}
 	}
 

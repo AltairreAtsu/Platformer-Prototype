@@ -11,6 +11,7 @@ public class PlayerSettings : ScriptableObject {
 	[Header("Ground Variables")]
 	[SerializeField] private float maxGroundSpeed = 10f;
 	[SerializeField] private float groundCheckRadius = 0.05f;
+	[SerializeField] private float footstepspeedThreshold = 2f;
 	[SerializeField] private Vector2 groundedJumpForce = new Vector2(0f, 10f);
 	[SerializeField] private LayerMask whatIsGround;
 
@@ -43,6 +44,7 @@ public class PlayerSettings : ScriptableObject {
 	public Transform GroundCheckPoint { get { return groundCheckPoint; } set { groundCheckPoint = value; } }
 	public float GroundSpeed { get { return maxGroundSpeed; } }
 	public float GroundCheckRadius { get { return groundCheckRadius; } }
+	public float FootStepSpeedThreshold { get { return footstepspeedThreshold; } }
 	public Vector2 GroundJumpForce { get { return groundedJumpForce; } }
 	public LayerMask WhatIsGround { get { return whatIsGround; } }
 

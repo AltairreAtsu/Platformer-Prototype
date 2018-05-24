@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour {
 	#region States
@@ -28,6 +29,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	private float lastDashTime = 0f;
 
+	private Tilemap foregroundTileMap;
+
 	#region Properties
 	public Animator Animator { get; private set; }
 	public Rigidbody2D RigidBody2d { get; private set; }
@@ -50,6 +53,7 @@ public class PlayerMovement : MonoBehaviour {
 	public event PlayerEvent jumpEvent;
 	public event PlayerEvent dashEvent;
 	public event PlayerEvent dieEvent;
+	public event PlayerEvent glideEvent;
 	public event PlayerEvent respawnEvent;
 	#endregion
 
@@ -58,6 +62,8 @@ public class PlayerMovement : MonoBehaviour {
 		Animator = GetComponent<Animator>();
 		RigidBody2d = GetComponent<Rigidbody2D>();
 		userInput = GetComponent<PlayerInput>();
+
+		foregroundTileMap = GameObject.FindWithTag("Foreground").GetComponent<Tilemap>();
 
 		Grounded = new GroundedState(this, playerSettings);
 		Airborne = new AirborneState(this, playerSettings);
@@ -153,6 +159,12 @@ public class PlayerMovement : MonoBehaviour {
 		return false;
 	}
 
+	public TileBase GetSurfaceBeneath()
+	{
+		var downardVector = transform.up * .2f * -1;
+		return foregroundTileMap.GetTile(Vector3Int.FloorToInt(playerSettings.GroundCheckPoint.position + downardVector));
+	}
+
 	#region Movement Methods
 	public void MoveHorizontal(float speed)
 	{
@@ -190,6 +202,7 @@ public class PlayerMovement : MonoBehaviour {
 	private void StartGliding()
 	{
 		// TODO seperate glide Visuals from glide logic
+		if(glideEvent != null) { glideEvent(); }
 		gliding = true;
 		SetGravityScale(playerSettings.GlidingGravity);
 		glideSpriteRender.enabled = true;

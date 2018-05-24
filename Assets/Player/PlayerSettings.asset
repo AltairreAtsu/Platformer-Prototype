@@ -16,6 +16,7 @@ MonoBehaviour:
   respawnTime: 1.5
   maxGroundSpeed: 1200
   groundCheckRadius: 0.05
+  footstepspeedThreshold: 1
   groundedJumpForce: {x: 0, y: 1100}
   whatIsGround:
     serializedVersion: 2
