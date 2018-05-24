@@ -6,10 +6,39 @@ using UnityEngine;
 [CustomEditor (typeof(AudioPlayer))]
 public class AudioPlayerInspector : Editor {
 
+	SerializedProperty minVolume;
+	SerializedProperty maxVolume;
+	SerializedProperty minPitch;
+	SerializedProperty maxPitch;
+
+	GUIContent testButtonContent;
+
+	private AudioSource TestSource;
+
+	public void OnEnable()
+	{
+		minVolume = serializedObject.FindProperty("minVolume");
+		maxVolume = serializedObject.FindProperty("maxVolume");
+		minPitch = serializedObject.FindProperty("minPitch");
+		maxPitch = serializedObject.FindProperty("maxPitch");
+
+		testButtonContent = new GUIContent();
+		testButtonContent.text = "Play Test Sound";
+	}
+
+	public void OnDisable()
+	{
+		if (TestSource)
+		{
+			DestroyImmediate(TestSource.gameObject);
+		}
+	}
+
 	public override void OnInspectorGUI()
 	{
 		base.OnInspectorGUI();
 		var myTarget = (AudioPlayer)target;
+		serializedObject.Update();
 
 		EditorGUILayout.LabelField("Volume Range:");
 
@@ -40,10 +69,32 @@ public class AudioPlayerInspector : Editor {
 
 		EditorGUILayout.EndHorizontal();
 
-		
+		minVolume.floatValue = myTarget.minVolume;
+		maxVolume.floatValue = myTarget.maxVolume;
+		minPitch.floatValue = myTarget.minPitch;
+		maxPitch.floatValue = maxPitch.floatValue;
+
+		serializedObject.ApplyModifiedProperties();
+
+		if (EditorGUILayout.DropdownButton(testButtonContent, FocusType.Passive))
+		{
+			if (!TestSource)
+			{
+				InstantiateTestSource();
+			}
+			myTarget.audioSource = TestSource;
+			myTarget.Play();
+			
+		}
 	}
 
-	public string formatFloat(float floatToFormat)
+	private void InstantiateTestSource()
+	{
+		TestSource = new GameObject().AddComponent<AudioSource>();
+		TestSource.gameObject.hideFlags = HideFlags.HideAndDontSave;
+	}
+
+	private string formatFloat(float floatToFormat)
 	{
 		return string.Format("{0:#.00}", floatToFormat);
 	}

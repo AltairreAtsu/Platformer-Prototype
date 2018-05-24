@@ -14,7 +14,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   clips:
   - {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
-  minPitch: 0.8815789
-  maxPitch: 1.5394737
+  minPitch: 0.6071654
+  maxPitch: 1.7081485
   maxVolume: 1
   minVolume: 0.86403507
