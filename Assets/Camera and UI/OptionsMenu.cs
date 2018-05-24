@@ -8,7 +8,6 @@ using TMPro;
 public class OptionsMenu : MonoBehaviour {
 
 	[SerializeField] private AudioMixer audioMixer;
-	[SerializeField] private TMP_Dropdown qualityDropDown;
 	[SerializeField] private TMP_Dropdown resolutionDropDown;
 	[SerializeField] private Toggle fullScreenToggle;
 
@@ -16,8 +15,6 @@ public class OptionsMenu : MonoBehaviour {
 
 	private void Start()
 	{
-		qualityDropDown.value = QualitySettings.GetQualityLevel();
-
 		fullScreenToggle.isOn = Screen.fullScreen;
 		supportedResolutions = Screen.resolutions;
 
@@ -44,11 +41,6 @@ public class OptionsMenu : MonoBehaviour {
 	public void SetVolume(float volume)
 	{
 		audioMixer.SetFloat("volume", volume);
-	}
-
-	public void SetQualityLevel(int qualityIndex)
-	{
-		QualitySettings.SetQualityLevel(qualityIndex);
 	}
 
 	public void SetResolution(int resolutionIndex)

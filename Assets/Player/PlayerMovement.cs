@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour {
 	private PlayerInput userInput;
 	private PhysicsMaterial2D groundMaterial;
 	private bool facingRight = true;
+	private bool dead = false;
 	
 	private float worldBottomThreshold = -10f;
 
@@ -28,6 +29,8 @@ public class PlayerMovement : MonoBehaviour {
 	private float lastJumpTime = 0f;
 
 	private float lastDashTime = 0f;
+
+	private float respawnTime = 1.5f;
 
 	#region Properties
 	public Animator Animator { get; private set; }
@@ -44,12 +47,14 @@ public class PlayerMovement : MonoBehaviour {
 	#endregion
 
 	#region Events
-	public delegate void PlayerMovementEvent();
+	public delegate void PlayerEvent();
 	public delegate void PlayerLandEvent(PhysicsMaterial2D material);
 
 	public event PlayerLandEvent LandEvent;
-	public event PlayerMovementEvent jumpEvent;
-	public event PlayerMovementEvent dashEvent;
+	public event PlayerEvent jumpEvent;
+	public event PlayerEvent dashEvent;
+	public event PlayerEvent dieEvent;
+	public event PlayerEvent respawnEvent;
 	#endregion
 
 	private void Start ()
@@ -71,6 +76,9 @@ public class PlayerMovement : MonoBehaviour {
 
 	private void FixedUpdate ()
 	{
+		if (dead) { return;  }
+
+		
 		currentState.Update();
 
 		Animator.SetFloat("Speed", Mathf.Abs(userInput.HorizontalThrow));
@@ -78,9 +86,21 @@ public class PlayerMovement : MonoBehaviour {
 
 		if (FellOutOfWorld())
 		{
-			// Loose health / life and restart from Checkpoint
-			Teleport(checkpoint.transform.position);
+			if (dieEvent != null) { dieEvent(); }
+			dead = true;
+			Animator.SetBool("Dead", dead);
+			
+			StartCoroutine(Respawn());
 		}
+	}
+
+	private IEnumerator Respawn()
+	{
+		yield return new WaitForSeconds(respawnTime);
+		dead = false;
+		Animator.SetBool("Dead", dead);
+		Teleport(checkpoint.transform.position);
+		if(respawnEvent != null) { respawnEvent(); }
 	}
 
 	private bool FellOutOfWorld()

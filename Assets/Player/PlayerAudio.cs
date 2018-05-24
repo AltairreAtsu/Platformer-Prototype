@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAudio : MonoBehaviour {
 	[SerializeField] private AudioPlayer jumpSoundPlayer;
 	[SerializeField] private AudioPlayer dashSoundPlayer;
+	[SerializeField] private AudioPlayer dieSoundPlayer;
 	[SerializeField] private AudioPlayer landSoundGrassPlayer;
 
 	private AudioSource audioSource;
@@ -18,10 +19,12 @@ public class PlayerAudio : MonoBehaviour {
 		jumpSoundPlayer.audioSource = audioSource;
 		dashSoundPlayer.audioSource = audioSource;
 		landSoundGrassPlayer.audioSource = audioSource;
+		dieSoundPlayer.audioSource = audioSource;
 
 		playerMovement.jumpEvent += OnJump;
 		playerMovement.dashEvent += OnDash;
 		playerMovement.LandEvent += OnLand;
+		playerMovement.dieEvent += OnDie;
 	}
 
 	private void OnJump ()
@@ -32,6 +35,11 @@ public class PlayerAudio : MonoBehaviour {
 	private void OnDash()
 	{
 		dashSoundPlayer.Play();
+	}
+
+	private void OnDie()
+	{
+		dieSoundPlayer.Play();
 	}
 
 	private void OnLand(PhysicsMaterial2D material)

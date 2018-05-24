@@ -9,7 +9,7 @@ public class AudioPlayer : ScriptableObject
 
 	[SerializeField] private AudioClip[] clips;
 
-	[HideInInspector] [SerializeField] public float minPitch = -3;
+	[HideInInspector] [SerializeField] public float minPitch = -1;
 	[HideInInspector] [SerializeField] public float maxPitch = 3;
 	[HideInInspector] [SerializeField] public float maxVolume = 1;
 	[HideInInspector] [SerializeField] public float minVolume = 0;
