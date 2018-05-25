@@ -4,45 +4,47 @@ using UnityEngine;
 
 public class ClimbingState : PlayerMovementState
 {
-	private PlayerMovement player;
+	private PlayerController playerController;
+	private PlayerLocomotion playerLocomotion;
 	private PlayerSettings PlyrSttings;
 
-	public ClimbingState(PlayerMovement playerMovement, PlayerSettings PlyrSttings)
+	public ClimbingState(PlayerController playerController, PlayerLocomotion playerLocomotion, PlayerSettings PlyrSttings)
 	{
-		this.player = playerMovement;
+		this.playerController = playerController;
+		this.playerLocomotion = playerLocomotion;
 		this.PlyrSttings = PlyrSttings;
 	}
 
 	public void EnterState()
 	{
-		player.SetGravityScale(0f);
-		player.SetBothConstraints();
+		playerController.SetGravityScale(0f);
+		playerController.SetBothConstraints();
 
-		player.SnapToWall();
+		playerController.SnapToWall();
 	}
 	private void ExitState()
 	{
-		player.SetGravityToOriginal();
-		player.ResetConstraints();
+		playerController.SetGravityToOriginal();
+		playerController.ResetConstraints();
 
-		if (player.IsTouchingGround())
+		if (playerController.IsTouchingGround())
 		{
-			player.TransitionClimbToGround();
+			playerController.TransitionClimbToGround();
 		}
 		else
 		{
-			player.TransitonClimbToAir();
+			playerController.TransitonClimbToAir();
 		}
 	}
 
 	public void Update()
 	{
-		if( !player.IsGrippingWall())
+		if( !playerController.IsGrippingWall())
 		{
 			ExitState();
 		}
 
-		player.WallClimb(PlyrSttings.WallClimbSpeed);
-		player.WallJump(PlyrSttings.WallJumpForce);
+		playerLocomotion.WallClimb(PlyrSttings.WallClimbSpeed);
+		playerLocomotion.WallJump(PlyrSttings.WallJumpForce);
 	}
 }

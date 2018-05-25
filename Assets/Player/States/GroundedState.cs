@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GroundedState : PlayerMovementState {
-	private PlayerMovement player;
+	private PlayerController playerController;
+	private PlayerLocomotion playerLocomotion;
 	private PlayerSettings PlyrSttings;
 
-	public GroundedState (PlayerMovement playerMovement, PlayerSettings PlyrSttings)
+	public GroundedState (PlayerController playerController, PlayerLocomotion playerLocomotion, PlayerSettings PlyrSttings)
 	{
-		player = playerMovement;
+		this.playerController = playerController;
+		this.playerLocomotion = playerLocomotion;
 		this.PlyrSttings = PlyrSttings;
 	}
 
@@ -16,20 +18,20 @@ public class GroundedState : PlayerMovementState {
 
 	public void Update ()
 	{
-		if( !player.IsTouchingGround() )
+		if( !playerController.IsTouchingGround() )
 		{
-			player.TransitionGroundToAir();
+			playerController.TransitionGroundToAir();
 			return;
 		}
-		if (player.IsGrippingWall())
+		if (playerController.IsGrippingWall())
 		{
-			player.TransitionGroundToClimb();
+			playerController.TransitionGroundToClimb();
 			return;
 		}
 
-		player.MoveHorizontal(PlyrSttings.GroundSpeed);
-		player.CheckCharacterFlip();
-		player.Dash();
-		player.Jump(PlyrSttings.GroundJumpForce);
+		playerLocomotion.MoveHorizontal(PlyrSttings.GroundSpeed);
+		playerController.CheckCharacterFlip();
+		playerLocomotion.Dash();
+		playerLocomotion.Jump(PlyrSttings.GroundJumpForce);
 	}
 }

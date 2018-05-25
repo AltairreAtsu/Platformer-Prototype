@@ -12,7 +12,7 @@ public class AirDash : MonoBehaviour {
 
 	private void Start()
 	{
-		GameObject.FindWithTag("Player").GetComponent<PlayerMovement>().dashEvent += StartDash;
+		GameObject.FindWithTag("Player").GetComponent<PlayerLocomotion>().dashEvent += StartDash;
 	}
 
 	private void StartDash()

@@ -9,7 +9,7 @@ public class LevelTunnel : MonoBehaviour {
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		var playerMovement = collision.GetComponentInParent<PlayerMovement>();
+		var playerMovement = collision.GetComponentInParent<PlayerController>();
 		if (!playerMovement) { return; }
 
 		if (playerMovement.FacingRight == enterFromRight)

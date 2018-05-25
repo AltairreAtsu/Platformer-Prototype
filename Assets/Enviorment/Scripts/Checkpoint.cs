@@ -6,7 +6,7 @@ public class Checkpoint : MonoBehaviour {
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		var player = collision.GetComponentInParent<PlayerMovement>();
+		var player = collision.GetComponentInParent<PlayerController>();
 		
 		if (player)
 		{

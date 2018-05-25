@@ -13,27 +13,39 @@ public class PlayerAudio : MonoBehaviour {
 	[SerializeField] private SurfacManager surfaceManager;
 
 	private AudioSource audioSource;
-	private PlayerMovement playerMovement;
+	private PlayerController playerController;
+	private PlayerLocomotion playerLocomotion;
 
 	private void Start ()
 	{
 		audioSource = GetComponent<AudioSource>();
-		playerMovement = GetComponent<PlayerMovement>();
+		playerController = GetComponent<PlayerController>();
+		playerLocomotion = GetComponent<PlayerLocomotion>();
 
-		playerMovement.jumpEvent += OnJump;
-		playerMovement.dashEvent += OnDash;
-		playerMovement.glideEvent += OnGlide;
-		playerMovement.LandEvent += OnLand;
-		playerMovement.dieEvent += OnDie;
+		playerLocomotion.jumpEvent += OnJump;
+		playerLocomotion.dashEvent += OnDash;
+		playerLocomotion.glideEvent += OnGlide;
+		playerController.LandEvent += OnLand;
+		playerController.dieEvent += OnDie;
 	}
 
 	public void PlayWalkSound()
 	{
-		var tile = playerMovement.GetSurfaceBeneath();
+		var tile = playerController.GetSurfaceBeneath();
 		if(tile == null) { return;  }
 
 		var surface = surfaceManager.GetSurface(tile.name);
 		if(surface == null) { return; }
+		surface.PlayWalkSound(audioSource);
+	}
+
+	public void PlayClimbingSound()
+	{
+		var tile = playerController.GetSurfaceClimbing();
+		if (tile == null) { return; }
+
+		var surface = surfaceManager.GetSurface(tile.name);
+		if (surface == null) { return; }
 		surface.PlayWalkSound(audioSource);
 	}
 
@@ -61,7 +73,7 @@ public class PlayerAudio : MonoBehaviour {
 	{
 		if (material == null)
 		{
-			var tile = playerMovement.GetSurfaceBeneath();
+			var tile = playerController.GetSurfaceBeneath();
 
 			if (tile == null) { return; }
 
@@ -79,9 +91,9 @@ public class PlayerAudio : MonoBehaviour {
 
 	private void OnDisable()
 	{
-		playerMovement.jumpEvent -= OnJump;
-		playerMovement.dashEvent -= OnDash;
-		playerMovement.LandEvent -= OnLand;
-		playerMovement.dieEvent -= OnDie;
+		playerLocomotion.jumpEvent -= OnJump;
+		playerLocomotion.dashEvent -= OnDash;
+		playerController.LandEvent -= OnLand;
+		playerController.dieEvent -= OnDie;
 	}
 }

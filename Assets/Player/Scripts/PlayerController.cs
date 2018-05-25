@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class PlayerMovement : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
 	#region States
 	private PlayerMovementState Grounded;
 	private PlayerMovementState Airborne;
@@ -11,23 +11,14 @@ public class PlayerMovement : MonoBehaviour {
 	private PlayerMovementState currentState;
 	#endregion
 
-	[SerializeField] PlayerSettings playerSettings;
-	[SerializeField] SpriteRenderer glideSpriteRender;
+	[SerializeField] private PlayerSettings playerSettings;
 	[SerializeField] private Checkpoint checkpoint;
 
 	private PlayerInput userInput;
+	private PlayerLocomotion playerLocomotion;
 	private PhysicsMaterial2D groundMaterial;
 	private bool facingRight = true;
 	private bool isDead = false;
-
-	private bool gliding = false;
-	private float glideBreakTime = 0f;
-
-	private bool usedFirstJump = false;
-	private bool usedDoubleJump = false;
-	private float lastJumpTime = 0f;
-
-	private float lastDashTime = 0f;
 
 	private Tilemap foregroundTileMap;
 
@@ -39,35 +30,28 @@ public class PlayerMovement : MonoBehaviour {
 		get { return facingRight; }
 		set { facingRight = value; }
 	}
-	public bool Gliding
-	{
-		get { return gliding; }
-	}
+	public PlayerSettings PlayerSettings { get { return playerSettings; } }
 	#endregion
 
-	#region Events
 	public delegate void PlayerEvent();
 	public delegate void PlayerLandEvent(PhysicsMaterial2D material);
 
-	public event PlayerLandEvent LandEvent;
-	public event PlayerEvent jumpEvent;
-	public event PlayerEvent dashEvent;
-	public event PlayerEvent dieEvent;
-	public event PlayerEvent glideEvent;
 	public event PlayerEvent respawnEvent;
-	#endregion
+	public event PlayerEvent dieEvent;
+	public event PlayerLandEvent LandEvent;
 
 	private void Start ()
 	{
 		Animator = GetComponent<Animator>();
 		RigidBody2d = GetComponent<Rigidbody2D>();
+		playerLocomotion = GetComponent<PlayerLocomotion>();
 		userInput = GetComponent<PlayerInput>();
 
 		foregroundTileMap = GameObject.FindWithTag("Foreground").GetComponent<Tilemap>();
 
-		Grounded = new GroundedState(this, playerSettings);
-		Airborne = new AirborneState(this, playerSettings);
-		Climbing = new ClimbingState(this, playerSettings);
+		Grounded = new GroundedState(this, playerLocomotion, playerSettings);
+		Airborne = new AirborneState(this, playerLocomotion, playerSettings);
+		Climbing = new ClimbingState(this, playerLocomotion, playerSettings);
 
 		playerSettings.GroundCheckPoint = transform.Find("GroundCheck");
 		playerSettings.WallCheckPoint = transform.Find("WallCheck");
@@ -82,8 +66,9 @@ public class PlayerMovement : MonoBehaviour {
 
 		currentState.Update();
 
-		Animator.SetFloat("Speed", Mathf.Abs(userInput.HorizontalThrow));
-		Animator.SetFloat("VerticalSpeed", RigidBody2d.velocity.y);
+		Animator.SetFloat("Absolute Horizontal Control Throw", Mathf.Abs(userInput.HorizontalThrow));
+		Animator.SetFloat("Vertical Velocity", RigidBody2d.velocity.y);
+		Animator.SetFloat("Absolute Vertical Control Throw", Mathf.Abs(userInput.VerticalThrow));
 
 		if (FellOutOfWorld())
 		{
@@ -120,10 +105,9 @@ public class PlayerMovement : MonoBehaviour {
 		transform.localScale = new Vector3(transform.localScale.x * -1,
 												transform.localScale.y,
 												transform.localScale.z);
-		
 	}
 
-	private float GetScaler()
+	public float GetScaler()
 	{
 		return (facingRight)? 1 : -1;
 	}
@@ -164,104 +148,11 @@ public class PlayerMovement : MonoBehaviour {
 		var downardVector = transform.up * .2f * -1;
 		return foregroundTileMap.GetTile(Vector3Int.FloorToInt(playerSettings.GroundCheckPoint.position + downardVector));
 	}
-
-	#region Movement Methods
-	public void MoveHorizontal(float speed)
+	public TileBase GetSurfaceClimbing()
 	{
-		RigidBody2d.AddForce(new Vector2(userInput.HorizontalThrow * speed * Time.deltaTime, 0f));
+		var facingVector = transform.right * .2f;
+		return foregroundTileMap.GetTile(Vector3Int.FloorToInt(playerSettings.WallCheckPoint.position + facingVector));
 	}
-	public void WallClimb(float speed)
-	{
-		RigidBody2d.AddForce(new Vector2(0f, userInput.VerticalThrow * speed * Time.deltaTime));
-	}
-
-	public void Dash()
-	{
-		var dashIOnCooldown = !(Time.time - lastDashTime > playerSettings.DashCooldownSeconds);
-		if (!userInput.DoDash || dashIOnCooldown) { return; }
-
-		if (dashEvent != null) { dashEvent(); }
-
-		RigidBody2d.AddForce(playerSettings.DashVector * GetScaler());
-		lastDashTime = Time.time;
-	}
-
-	public void UpdateGlide()
-	{
-		var glideIsOnCooldown = Time.time - glideBreakTime < playerSettings.GlideBreakCoolDownSeconds;
-
-		if (userInput.DoGlide && !gliding && !glideIsOnCooldown)
-		{
-			StartGliding();
-		}
-		else if (!userInput.DoGlide && gliding)
-		{
-			StopGliding();
-		}
-	}
-	private void StartGliding()
-	{
-		// TODO seperate glide Visuals from glide logic
-		if(glideEvent != null) { glideEvent(); }
-		gliding = true;
-		SetGravityScale(playerSettings.GlidingGravity);
-		glideSpriteRender.enabled = true;
-	}
-	private void StopGliding()
-	{
-		gliding = false;
-		SetGravityToOriginal();
-		glideSpriteRender.enabled = false;
-		glideBreakTime = Time.time;
-	}
-
-	public void AirJump(Vector2 jumpForce)
-	{
-		if (!userInput.DoJump) { return; }
-
-		var jumpIsOnCoolDown = Time.time - lastJumpTime < playerSettings.JumpCooldownSeconds;
-
-		if (usedFirstJump && usedDoubleJump || jumpIsOnCoolDown) { return; }
-
-		else if (!usedFirstJump && !usedDoubleJump)
-		{
-			usedFirstJump = true;
-		}
-		else if (usedFirstJump && !usedDoubleJump)
-		{
-			usedDoubleJump = true;
-		}
-		if (gliding)
-		{
-			StopGliding();
-		}
-
-		RigidBody2d.velocity = new Vector2(RigidBody2d.velocity.x, 0f);
-		Jump(jumpForce);
-	}
-	public void WallJump(Vector2 jumpForce)
-	{
-		if (!userInput.DoJump) { return; }
-
-		ResetConstraints();
-
-		var scaler = (facingRight) ? 1 : -1;
-		var appliedJumpForce = new Vector2(jumpForce.x * GetScaler(), jumpForce.y);
-		Jump(appliedJumpForce);
-
-	}
-	public void Jump(Vector2 jumpForce)
-	{
-		if (!userInput.DoJump) { return; }
-
-		if (jumpEvent != null) { jumpEvent(); }
-
-		usedFirstJump = true;
-		lastJumpTime = Time.time;
-
-		RigidBody2d.AddForce(jumpForce);
-	}
-	#endregion
 
 	public void Teleport (Vector3 positionTo)
 	{
@@ -270,7 +161,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	public void SnapToWall()
 	{
-		var scaler = (facingRight) ? 1 : -1;
 		var hit = Physics2D.Raycast(playerSettings.WallCheckPoint.position, Vector2.right * GetScaler(), playerSettings.WallSnapRaycastDistance, playerSettings.WhatIsWall);
 
 		var distanceToWall = hit.distance;
@@ -325,45 +215,47 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		currentState = Airborne;
 		currentState.EnterState();
+
 		Animator.SetBool("AirBorne", true);
 	}
 	public void TransitionAirToGround()
 	{
 		currentState = Grounded;
+		
+		playerLocomotion.ResetJumps();
+		if (playerLocomotion.Gliding) playerLocomotion.StopGliding();
+
 		Animator.SetBool("AirBorne", false);
-
-		usedFirstJump = false;
-		usedDoubleJump = false;
-		if (gliding) StopGliding();
-
 		if (LandEvent != null) { LandEvent(groundMaterial); }
 	}
 	public void TransitionGroundToClimb()
 	{
 		currentState = Climbing;
 		currentState.EnterState();
+		Animator.SetBool("Climbing", true);
 	}
 	public void TransitionAirToClimb()
 	{
 		currentState = Climbing;
 		currentState.EnterState();
 
-		usedFirstJump = false;
-		usedDoubleJump = false;
-		if (gliding) StopGliding();
+		playerLocomotion.ResetJumps();
+		if (playerLocomotion.Gliding) playerLocomotion.StopGliding();
 
 		Animator.SetBool("AirBorne", false);
+		Animator.SetBool("Climbing", true);
 	}
 	public void TransitionClimbToGround()
 	{
 		currentState = Grounded;
-
+		Animator.SetBool("Climbing", false);
 	}
 	public void TransitonClimbToAir()
 	{
 		currentState = Airborne;
 		currentState.EnterState();
 		Animator.SetBool("AirBorne", true);
+		Animator.SetBool("Climbing", false);
 	}
 	#endregion
 }

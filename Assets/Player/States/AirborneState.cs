@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AirborneState : PlayerMovementState {
-	private PlayerMovement player;
+	private PlayerController playerController;
+	private PlayerLocomotion playerLocomotion;
 	private PlayerSettings PlyrSttings;
 
-	public AirborneState(PlayerMovement playerMovement, PlayerSettings PlyrSttings)
+	public AirborneState(PlayerController playerController, PlayerLocomotion playerLocomotion, PlayerSettings PlyrSttings)
 	{
-		this.player = playerMovement;
+		this.playerController = playerController;
+		this.playerLocomotion = playerLocomotion;
 		this.PlyrSttings = PlyrSttings;
 	}
 
@@ -16,21 +18,21 @@ public class AirborneState : PlayerMovementState {
 
 	public void Update()
 	{
-		if ( player.IsTouchingGround() )
+		if ( playerController.IsTouchingGround() )
 		{
-			player.TransitionAirToGround();
+			playerController.TransitionAirToGround();
 			return;
 		}
-		if ( player.IsGrippingWall() )
+		if ( playerController.IsGrippingWall() )
 		{
-			player.TransitionAirToClimb();
+			playerController.TransitionAirToClimb();
 			return;
 		}
 
-		player.MoveHorizontal(PlyrSttings.AirSpeed);
-		player.CheckCharacterFlip();
-		player.UpdateGlide();
-		player.AirJump(PlyrSttings.AirJumpForce);	
-		player.Dash();
+		playerLocomotion.MoveHorizontal(PlyrSttings.AirSpeed);
+		playerController.CheckCharacterFlip();
+		playerLocomotion.UpdateGlide();
+		playerLocomotion.AirJump(PlyrSttings.AirJumpForce);
+		playerLocomotion.Dash();
 	}
 }

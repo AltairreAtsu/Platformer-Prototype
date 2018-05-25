@@ -1339,7 +1339,7 @@ MonoBehaviour:
   defaultClickSound: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
   playClickSound: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
   quitClickSound: {fileID: 8300000, guid: 130a177e727814a2ea78a886ab72213d, type: 3}
-  hoverSound: {fileID: 0}
+  hoverSound: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
 --- !u!114 &114995875139072764
 MonoBehaviour:
   m_ObjectHideFlags: 1

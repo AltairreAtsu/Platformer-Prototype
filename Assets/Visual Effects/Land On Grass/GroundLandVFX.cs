@@ -5,12 +5,12 @@ using UnityEngine;
 public class GroundLandVFX : MonoBehaviour {
 
 	private Animator animator;
-	private PlayerMovement playerMovement;
+	private PlayerController playerMovement;
 
 	private void Start()
 	{
 		animator = GetComponent<Animator>();
-		playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+		playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 		playerMovement.LandEvent += OnLand;
 	}
 

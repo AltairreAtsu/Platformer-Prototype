@@ -10,7 +10,7 @@ public class SessionMockUp : MonoBehaviour {
 		var musicPlayer = FindObjectOfType<MusicPlayer>();
 		if(musicPlayer == null)
 		{
-			var newMusicPlayer = Instantiate(musicPlayerPrefab);
+			Instantiate(musicPlayerPrefab);
 		}
 
 		Destroy(gameObject);
