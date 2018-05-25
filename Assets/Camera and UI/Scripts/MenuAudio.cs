@@ -7,6 +7,8 @@ public class MenuAudio : MonoBehaviour {
 	[SerializeField] private AudioClip playClickSound;
 	[SerializeField] private AudioClip quitClickSound;
 
+	[SerializeField] private AudioClip hoverSound;
+
 	private AudioSource audioSource;
 
 	private void Start()
@@ -23,17 +25,27 @@ public class MenuAudio : MonoBehaviour {
 		switch (buttonName)
 		{
 			case "Play":
+				audioSource.Stop();
 				audioSource.clip = playClickSound;
 				audioSource.Play();
 				break;
 			case "Quit":
+				audioSource.Stop();
 				audioSource.clip = quitClickSound;
 				audioSource.Play();
 				break;
 			default:
+				audioSource.Stop();
 				audioSource.clip = defaultClickSound;
 				audioSource.Play();
 				break;
 		}
+	}
+
+	public void PlayHoverSound()
+	{
+		audioSource.Stop();
+		audioSource.clip = hoverSound;
+		audioSource.Play();
 	}
 }
