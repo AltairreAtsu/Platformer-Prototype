@@ -11,10 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7eca1a2e909e94b8f15286793cfad7, type: 3}
   m_Name: Play Jump Event
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   clips:
   - {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
   minPitch: 0.4838301
   maxPitch: 1.3214968
-  maxVolume: 0.64658654
-  minVolume: 0.45798984
+  maxVolume: 0.63865006
+  minVolume: 0.45005333

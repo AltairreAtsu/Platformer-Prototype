@@ -114,6 +114,8 @@ public class PlayerController : MonoBehaviour {
 
 	public bool IsGrippingWall()
 	{
+		if(Time.time - playerLocomotion.ClimbBreakTime < playerSettings.WallBreakCooldown) { return false;  }
+
 		Collider2D[] wallColliders =
 			Physics2D.OverlapCircleAll(playerSettings.WallCheckPoint.position, playerSettings.WallCheckRadius, playerSettings.WhatIsWall);
 

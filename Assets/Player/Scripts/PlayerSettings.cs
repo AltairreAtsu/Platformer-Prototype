@@ -27,6 +27,7 @@ public class PlayerSettings : ScriptableObject {
 	[SerializeField] private float wallCheckRadius = 0.5f;
 	[SerializeField] private float wallSnapRaycastDistance = 0.5f;
 	[SerializeField] private float wallGripThreshold = 0.1f;
+	[SerializeField] private float wallBreakCooldown = 0.2f;
 	[SerializeField] private Vector2 wallJumpForce = new Vector2(0f, 10f);
 	[SerializeField] private LayerMask whatIsWall;
 
@@ -59,6 +60,7 @@ public class PlayerSettings : ScriptableObject {
 	public float WallCheckRadius { get { return wallCheckRadius; } }
 	public float WallSnapRaycastDistance { get { return wallSnapRaycastDistance; } }
 	public float WallGripThreshold { get { return wallGripThreshold; } }
+	public float WallBreakCooldown { get { return wallBreakCooldown; } }
 	public Vector2 WallJumpForce { get { return wallJumpForce; } }
 	public LayerMask WhatIsWall { get { return whatIsWall; } }
 

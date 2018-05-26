@@ -19,8 +19,14 @@ public class PlayerLocomotion : MonoBehaviour {
 	private bool usedDoubleJump = false;
 	private float lastJumpTime = 0f;
 
+	private float climbBreakTime = 0f;
+
 	private float lastDashTime = 0f;
 
+	public float ClimbBreakTime
+	{
+		get { return climbBreakTime; }
+	}
 	public bool Gliding
 	{
 		get { return gliding; }
@@ -121,11 +127,14 @@ public class PlayerLocomotion : MonoBehaviour {
 	{
 		if (!userInput.DoJump) { return; }
 
+		climbBreakTime = Time.time;
+
 		playerController.ResetConstraints();
+		playerController.SetGravityToOriginal();
 
-		var appliedJumpForce = new Vector2(jumpForce.x * playerController.GetScaler(), jumpForce.y);
+		// Inverts Scaler to apply force in opposite direction
+		var appliedJumpForce = new Vector2(jumpForce.x * (playerController.GetScaler()*-1), jumpForce.y);
 		Jump(appliedJumpForce);
-
 	}
 	public void Jump(Vector2 jumpForce)
 	{
