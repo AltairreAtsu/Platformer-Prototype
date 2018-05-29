@@ -12,21 +12,18 @@ public class PlayerAudio : MonoBehaviour {
 	[SerializeField] private AudioPlayer jumpSoundPlayer;
 	[SerializeField] private AudioPlayer dashSoundPlayer;
 	[SerializeField] private AudioPlayer glideSoundPlayer;
-	[SerializeField] private AudioPlayer dieSoundPlayer;
 	[Space]
 	[SerializeField] private PlayerSettings playerSettings;
 	[SerializeField] private SurfacManager surfaceManager;
 
-	private AudioSource surfaceAudioSource;
-	private AudioSource jumpAudioSource;
-	private AudioSource attackAudioSource;
+	private AudioSource audioSource;
 
 	private PlayerController playerController;
 	private PlayerLocomotion playerLocomotion;
 
 	private void Start ()
 	{
-		GetAudioSources();
+		audioSource = GetComponent<AudioSource>();
 
 		playerController = GetComponent<PlayerController>();
 		playerLocomotion = GetComponent<PlayerLocomotion>();
@@ -36,82 +33,66 @@ public class PlayerAudio : MonoBehaviour {
 		playerLocomotion.dashEvent += OnDash;
 		playerLocomotion.glideEvent += OnGlide;
 		playerController.LandEvent += OnLand;
-		playerController.dieEvent += OnDie;
-	}
-
-	private void GetAudioSources()
-	{
-		var audioSources = GetComponents<AudioSource>();
-		for (int i = 0; i < audioSources.Length; i++)
-		{
-			if (audioSources[i].priority == surfaceAudioPlayerPriority) { surfaceAudioSource = audioSources[i]; }
-			if (audioSources[i].priority == jumpAudioPlayerPriority) { jumpAudioSource = audioSources[i]; }
-			if (audioSources[i].priority == attackAudioPlayerPriority) { attackAudioSource = audioSources[i]; }
-		}
 	}
 
 	public void PlayWalkSound()
 	{
-		var tile = playerController.GetSurfaceBeneath();
+		var tile = playerController.GetTileSurfaceBeneath();
 		if(tile == null) { return;  }
 
 		var surface = surfaceManager.GetSurface(tile.name);
 		if(surface == null) { return; }
-		surface.PlayWalkSound(surfaceAudioSource);
+		surface.PlayWalkSound(audioSource);
 	}
 
 	public void PlayClimbingSound()
 	{
-		var tile = playerController.GetSurfaceClimbing();
+		var tile = playerController.GetTileSurfaceClimbing();
 		if (tile == null) { return; }
 
 		var surface = surfaceManager.GetSurface(tile.name);
 		if (surface == null) { return; }
-		surface.PlayWalkSound(surfaceAudioSource);
+		surface.PlayWalkSound(audioSource);
 	}
 
 	private void OnAttack()
 	{
-		attackSoundPlayer.Play(attackAudioSource);
+		attackSoundPlayer.Play(audioSource);
 	}
 
 	private void OnJump ()
 	{
-		jumpSoundPlayer.Play(jumpAudioSource);
+		jumpSoundPlayer.Play(audioSource);
 	}
 
 	private void OnDash()
 	{
-		dashSoundPlayer.Play(surfaceAudioSource);
+
+		dashSoundPlayer.Play(audioSource);
 	}
 
 	private void OnGlide()
 	{
-		glideSoundPlayer.Play(surfaceAudioSource);
-	}
-
-	private void OnDie()
-	{
-		dieSoundPlayer.Play(surfaceAudioSource);
+		glideSoundPlayer.Play(audioSource);
 	}
 
 	private void OnLand(PhysicsMaterial2D material)
 	{
 		if (material == null)
 		{
-			var tile = playerController.GetSurfaceBeneath();
+			var tile = playerController.GetTileSurfaceBeneath();
 
 			if (tile == null) { return; }
 
 			var surface = surfaceManager.GetSurface(tile.name);
 			if (surface == null) { return; }
-			surface.PlayLandSound(surfaceAudioSource);
+			surface.PlayLandSound(audioSource);
 		}
 		else
 		{
 			var surface = surfaceManager.GetSurface(material);
 			if (surface == null) { return; }
-			surface.PlayLandSound(surfaceAudioSource);
+			surface.PlayLandSound(audioSource);
 		}
 	}
 
@@ -120,6 +101,5 @@ public class PlayerAudio : MonoBehaviour {
 		playerLocomotion.jumpEvent -= OnJump;
 		playerLocomotion.dashEvent -= OnDash;
 		playerController.LandEvent -= OnLand;
-		playerController.dieEvent -= OnDie;
 	}
 }

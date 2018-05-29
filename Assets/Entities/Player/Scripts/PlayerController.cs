@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour {
 
 	private float lastAttackTime;
 
+	private IDamagable healthScript;
+	private PlayerCollisionHandler collisionHandler;
 	private PlayerInput userInput;
 	private PlayerLocomotion playerLocomotion;
 	private PhysicsMaterial2D groundMaterial;
@@ -45,8 +47,6 @@ public class PlayerController : MonoBehaviour {
 	public delegate void PlayerLandEvent(PhysicsMaterial2D material);
 
 	public event PlayerEvent attackEvent;
-	public event PlayerEvent respawnEvent;
-	public event PlayerEvent dieEvent;
 	public event PlayerLandEvent LandEvent;
 
 	private void Start ()
@@ -55,6 +55,11 @@ public class PlayerController : MonoBehaviour {
 		RigidBody2d = GetComponent<Rigidbody2D>();
 		playerLocomotion = GetComponent<PlayerLocomotion>();
 		userInput = GetComponent<PlayerInput>();
+
+		collisionHandler = GetComponentInChildren<PlayerCollisionHandler>();
+		collisionHandler.enemyCollisionEvent += TakeDamage;
+
+		healthScript = GetComponent<IDamagable>();
 
 		foregroundTileMap = GameObject.FindWithTag("Foreground").GetComponent<Tilemap>();
 
@@ -81,27 +86,8 @@ public class PlayerController : MonoBehaviour {
 
 		if (FellOutOfWorld())
 		{
-			Die();
+			healthScript.Die();
 		}
-	}
-
-	private void Die()
-	{
-		if (dieEvent != null) { dieEvent(); }
-		isDead = true;
-		Animator.SetBool("Dead", isDead);
-
-		StartCoroutine(Respawn());
-	}
-
-	private IEnumerator Respawn()
-	{
-		yield return new WaitForSeconds(playerSettings.RespawnTimeSeconds);
-		if (respawnEvent != null) { respawnEvent(); }
-
-		isDead = false;
-		Animator.SetBool("Dead", isDead);
-		Teleport(checkpoint.transform.position);
 	}
 
 	private bool FellOutOfWorld()
@@ -158,12 +144,12 @@ public class PlayerController : MonoBehaviour {
 		return false;
 	}
 
-	public TileBase GetSurfaceBeneath()
+	public TileBase GetTileSurfaceBeneath()
 	{
 		var downardVector = transform.up * .2f * -1;
 		return foregroundTileMap.GetTile(Vector3Int.FloorToInt(playerSettings.GroundCheckPoint.position + downardVector));
 	}
-	public TileBase GetSurfaceClimbing()
+	public TileBase GetTileSurfaceClimbing()
 	{
 		var facingVector = transform.right * .2f;
 		return foregroundTileMap.GetTile(Vector3Int.FloorToInt(playerSettings.WallCheckPoint.position + facingVector));
@@ -172,6 +158,10 @@ public class PlayerController : MonoBehaviour {
 	public void Teleport (Vector3 positionTo)
 	{
 		transform.position = positionTo;
+	}
+	public void TeleportToCheckpoint()
+	{
+		transform.position = checkpoint.transform.position;
 	}
 
 	public void SnapToWall()
@@ -205,6 +195,20 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		lastAttackTime = Time.time;
+	}
+
+	private void TakeDamage(float damage, Transform damageDealer)
+	{
+		healthScript.Damage(damage, damageDealer);
+	}
+
+	public void SetCollidersActiveState(bool collidersActive)
+	{
+		var colliders = GetComponentsInChildren<Collider2D>();
+		for(int i = 0; i < colliders.Length; i++)
+		{
+			colliders[i].enabled = collidersActive;
+		}
 	}
 
 	#region Physics Functions

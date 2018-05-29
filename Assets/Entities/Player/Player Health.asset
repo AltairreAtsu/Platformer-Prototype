@@ -9,10 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2c7dee9c6e236949a9e8ff3532030a7, type: 3}
-  m_Name: Opossum
+  m_Name: Player Health
   m_EditorClassIdentifier: 
   maxHealth: 10
-  knockBackPower: 150
-  invicabilityTime: 0.4
-  hurtSoundPlayer: {fileID: 11400000, guid: 20db186170ba1764e87e2003eab5e1b3, type: 2}
-  deathSoundPlayer: {fileID: 11400000, guid: dc770fee68bd0784e979acaf0cf6cca7, type: 2}
+  knockBackPower: 300
+  invicabilityTime: 0.5
+  hurtSoundPlayer: {fileID: 11400000, guid: 31d4538a889a2584d9c9aab7e713ed3a, type: 2}
+  deathSoundPlayer: {fileID: 11400000, guid: 68d8870649ef75544af4337eff5cb220, type: 2}

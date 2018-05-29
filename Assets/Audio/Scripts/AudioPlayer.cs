@@ -14,10 +14,13 @@ public class AudioPlayer : ScriptableObject
 
 	public void Play(AudioSource audioSource)
 	{
-		audioSource.clip = (clips.Length > 1) ? clips[Random.Range(0, clips.Length - 1)] : clips[0];
+//		audioSource.clip = (clips.Length > 1) ? clips[Random.Range(0, clips.Length - 1)] : clips[0];
 		audioSource.pitch = Random.Range(minPitch, maxPitch);
 		audioSource.volume = Random.Range(minVolume, maxVolume);
-		audioSource.Play();
+//		audioSource.Play();
+
+		var clip = (clips.Length > 1) ? clips[Random.Range(0, clips.Length - 1)] : clips[0];
+		audioSource.PlayOneShot(clip);
 	}
 
 }

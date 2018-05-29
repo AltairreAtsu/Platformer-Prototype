@@ -9,13 +9,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b7eca1a2e909e94b8f15286793cfad7, type: 3}
-  m_Name: Player Walk Wood
+  m_Name: Opossum Die
   m_EditorClassIdentifier: 
   clips:
-  - {fileID: 8300000, guid: b8ceb61df1e866b4f9f031b4a40fe425, type: 3}
-  - {fileID: 8300000, guid: 0fe48bd1e8ac47d439d5638e2202ff2f, type: 3}
-  - {fileID: 8300000, guid: b71507707da81e54c808c12b276d6fab, type: 3}
-  minPitch: 1.1785715
-  maxPitch: 2.0119047
-  maxVolume: 0.6785714
-  minVolume: 0.51587296
+  - {fileID: 8300000, guid: 7e9ee6dc04a5d40d1a5dfc4beb9865e7, type: 3}
+  minPitch: 1.1806976
+  maxPitch: 1.7322537
+  maxVolume: 1
+  minVolume: 0.7982456

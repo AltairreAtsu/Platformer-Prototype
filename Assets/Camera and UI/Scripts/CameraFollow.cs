@@ -14,9 +14,9 @@ public class CameraFollow : MonoBehaviour {
 		target = GameObject.FindWithTag("Player").transform;
 		differentialVector = target.position - transform.position;
 
-		var playerMovement = target.GetComponent<PlayerController>();
-		playerMovement.respawnEvent += StartFollowingPlayer;
-		playerMovement.dieEvent += StopFollowingPlayer;
+		var playerHealth = target.GetComponent<PlayerHealth>();
+		playerHealth.respawnEvent += StartFollowingPlayer;
+		playerHealth.dieEvent += StopFollowingPlayer;
 	}
 	
 	private void Update ()

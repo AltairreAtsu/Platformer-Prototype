@@ -1,32 +1,46 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof(Rigidbody2D))]
 public class Health : MonoBehaviour, IDamagable {
-	[SerializeField] private HealthTemplate template;
-	[SerializeField] private float invicabilityTime;
+	[SerializeField] protected HealthTemplate template;
 
 	// Not Sharred State
-	private AudioSource hurtSoundSource;
+	public EventHandler DamageEvent { get; set; }
+
+	private Coroutine deathCorounte;
 	private Rigidbody2D rigidbody2d;
 	private VFXManager vfxManager;
-	private float currentHealth;
+	private IDamageVisualize graphicsComponent;
+	protected AudioSource hurtSoundSource;
+	protected float currentHealth;
 
 	private float damageTimer;
 
-	private void Start ()
+	public virtual void Start ()
 	{
-		vfxManager = GameObject.FindGameObjectWithTag("VFX Manager").GetComponent<VFXManager>();
 		hurtSoundSource = GetComponent<AudioSource>();
 		rigidbody2d = GetComponent<Rigidbody2D>();
+		vfxManager = GameObject.FindGameObjectWithTag("VFX Manager").GetComponent<VFXManager>();
+		graphicsComponent = GetComponent<IDamageVisualize>();
+
 		currentHealth = template.MaxHealth;
 	}
 	
-	private void Die()
+	public virtual void Die()
 	{
+		if(deathCorounte != null) { return; }
 		vfxManager.SpawnEntityDeathPrefab(transform);
+		template.DeathSoundPlayer.Play(hurtSoundSource);
 		// TODO: Use Enemy Object Pool
+		deathCorounte = StartCoroutine(DoDestroy(0.1f));
+	}
+
+	private IEnumerator DoDestroy(float delay)
+	{
+		yield return new WaitForSeconds(delay);
 		Destroy(gameObject);
 	}
 
@@ -41,18 +55,17 @@ public class Health : MonoBehaviour, IDamagable {
 	public void Damage(float damage, Transform damageDealerTransform)
 	{
 		if(IsInvulnerableTimerRunning()) { return; }
-		damageTimer = invicabilityTime;
-
+		
 		currentHealth -= damage;
+
+		if(currentHealth <= 0) { Die(); return; }
+		damageTimer = template.InvincabilityTime;
+
+		if (graphicsComponent != null) { graphicsComponent.DoDamageVisualize(damageTimer); }
+		if (DamageEvent != null) { DamageEvent(null, null); }
 
 		ApplyKnockback(damageDealerTransform);
 		PlayHurtAudioCue(hurtSoundSource);
-
-
-		if(currentHealth <= 0)
-		{
-			Die();
-		}
 	}
 
 	public bool IsInvulnerableTimerRunning()
@@ -72,5 +85,4 @@ public class Health : MonoBehaviour, IDamagable {
 		// TODO: Refactor Hurt Sound playing to an event respone (?)
 		template.HurtSoundPlayer.Play(audiosource);
 	}
-
 }
