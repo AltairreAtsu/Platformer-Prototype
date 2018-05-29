@@ -22,8 +22,7 @@ GameObject:
   - component: {fileID: 223019146929269568}
   - component: {fileID: 114625835053549784}
   - component: {fileID: 114695711499082578}
-  - component: {fileID: 95773794055473296}
-  - component: {fileID: 114288370059703090}
+  - component: {fileID: 114336004555540090}
   m_Layer: 5
   m_Name: Fade Canvas
   m_TagString: Untagged
@@ -47,25 +46,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!95 &95773794055473296
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1841475322511378}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 617f8fd2c62f81b409a16005ac8f5891, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 2
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_IsActive: 1
 --- !u!114 &114263489791499702
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -78,8 +59,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -93,7 +74,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114288370059703090
+--- !u!114 &114336004555540090
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -104,21 +85,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468030541b7b02c40a4107209afaa30b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finishedFading:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: StartLoadingLevel
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: StringEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  fadeImage: {fileID: 114263489791499702}
+  durration: 1.5
 --- !u!114 &114625835053549784
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Foreground
+  - VFX Manager
+  - LevelLoader
   layers:
   - Default
   - TransparentFX
@@ -16,7 +18,7 @@ TagManager:
   - 
   - Ground
   - Wall
-  - Global
+  - Enemy
   - 
   - 
   - 
