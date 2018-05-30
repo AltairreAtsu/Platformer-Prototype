@@ -609,7 +609,6 @@ MonoBehaviour:
   jumpSoundPlayer: {fileID: 11400000, guid: 5fc814882107f5b41854c7cf8cf95e81, type: 2}
   dashSoundPlayer: {fileID: 11400000, guid: 6ec4a0c482492b0428b6fa8bc7cdc1ea, type: 2}
   glideSoundPlayer: {fileID: 11400000, guid: ec31ec576f0875f4cb2d0183ea31da3c, type: 2}
-  dieSoundPlayer: {fileID: 11400000, guid: 68d8870649ef75544af4337eff5cb220, type: 2}
   playerSettings: {fileID: 11400000, guid: d655f61aa2d3a5a418e16e85695f85b9, type: 2}
   surfaceManager: {fileID: 11400000, guid: fde6a5c6b5366e2439d062ca5b022dde, type: 2}
 --- !u!114 &114708448460909534

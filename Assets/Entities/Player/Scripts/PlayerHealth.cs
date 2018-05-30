@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : Health {
+public class PlayerHealth : EntityHealth {
 	[SerializeField] private PlayerSettings playerSettings;
 
 	private PlayerController playerController;

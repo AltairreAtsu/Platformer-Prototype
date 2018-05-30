@@ -4,10 +4,6 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class PlayerAudio : MonoBehaviour {
-	[SerializeField] private int surfaceAudioPlayerPriority = 128;
-	[SerializeField] private int jumpAudioPlayerPriority = 127;
-	[SerializeField] private int attackAudioPlayerPriority = 126;
-	[Space]
 	[SerializeField] private AudioPlayer attackSoundPlayer;
 	[SerializeField] private AudioPlayer jumpSoundPlayer;
 	[SerializeField] private AudioPlayer dashSoundPlayer;

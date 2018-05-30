@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 82644730539160700}
   - component: {fileID: 114434243258432624}
   - component: {fileID: 114947895168651602}
+  - component: {fileID: 114756844612180544}
   m_Layer: 10
   m_Name: Opossum Enemy
   m_TagString: Untagged
@@ -129,7 +130,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1158071282094492}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.21, y: 0, z: 0}
+  m_LocalPosition: {x: 101.45849, y: -1.9777881, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4682108309533382}
@@ -350,18 +351,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58531a47d1884f546bc406d4cf114576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entitySettings: {fileID: 11400000, guid: eb41edc3c4c9a044a98ef8454bda4c1a, type: 2}
+  WorldBottomThreshold: -5
   startPoint: {x: 3.56, y: 0}
   endPoint: {x: -4.47, y: 0}
   pointArrivalDistance: 0.3
-  maxSpeed: 10
-  maxVelocity: 3
-  maxForce: 10
-  slowdingRadius: 1
   groundCheckPoint: {fileID: 4748836474809788}
-  groundCheckRadius: 0.05
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 256
+--- !u!114 &114756844612180544
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1158071282094492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26acc84f701434941a45b9ef42667651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRender: {fileID: 212598497477208788}
+  flickers: 4
 --- !u!114 &114947895168651602
 MonoBehaviour:
   m_ObjectHideFlags: 1
