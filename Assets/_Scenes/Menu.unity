@@ -5757,9 +5757,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6049092a2cf4bec408eb72000693359d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultClickSound: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
-  playClickSound: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
-  quitClickSound: {fileID: 8300000, guid: 130a177e727814a2ea78a886ab72213d, type: 3}
+  UISoundLibrary:
+    m_keys:
+    - Play
+    - Quit
+    - 
+    m_values:
+    - {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
+    - {fileID: 8300000, guid: 130a177e727814a2ea78a886ab72213d, type: 3}
+    - {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
   hoverSound: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
 --- !u!1 &1478186762
 GameObject:

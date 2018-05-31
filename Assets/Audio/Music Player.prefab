@@ -21,9 +21,10 @@ GameObject:
   - component: {fileID: 4465802021984646}
   - component: {fileID: 82560041834200264}
   - component: {fileID: 114469791587455326}
+  - component: {fileID: 114168018073508874}
   m_Layer: 0
   m_Name: Music Player
-  m_TagString: Untagged
+  m_TagString: Music Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,11 +52,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: d2a17135b95e3584497d7a5424475da0,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 18b9b236c56c77a499f95a130e8d4871, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.3
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -137,6 +138,34 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &114168018073508874
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1810324925316972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cec0f3ffbd23d1c43834492817d11fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: b23ed48dec271c449b5349521c5108af, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114469791587455326}
+        m_MethodName: TransitionBackToDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114469791587455326
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -148,10 +177,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec0d1d4dab14b9488a8565b7015e0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicTracks:
-  - {fileID: 8300000, guid: 18b9b236c56c77a499f95a130e8d4871, type: 3}
-  - {fileID: 8300000, guid: 690ce7070f5c2c94c81a7a5101a6b0e7, type: 3}
-  - {fileID: 8300000, guid: 18b9b236c56c77a499f95a130e8d4871, type: 3}
+  musicManager: {fileID: 11400000, guid: c05bf6e35082aea49b3a5d121585e762, type: 2}
+  combatTrack: {fileID: 8300000, guid: f22c7df422ca6854aa49616e6124bc94, type: 3}
   sceneChangeTrnasitionTime: 1
   sceneChangeTransitionSteps: 10
+  cueChangeTrnasitionTime: 1
+  cueChangeTransitionSteps: 10
   menuSceneName: Menu

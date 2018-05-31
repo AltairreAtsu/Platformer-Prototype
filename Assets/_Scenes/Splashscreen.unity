@@ -613,32 +613,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 82560041834200264, guid: 223d4199b5dfecc4899ce535c993e9b9,
-        type: 2}
-      propertyPath: Loop
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 82560041834200264, guid: 223d4199b5dfecc4899ce535c993e9b9,
-        type: 2}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
-    - target: {fileID: 114469791587455326, guid: 223d4199b5dfecc4899ce535c993e9b9,
-        type: 2}
-      propertyPath: musicTracks.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
-    - target: {fileID: 114469791587455326, guid: 223d4199b5dfecc4899ce535c993e9b9,
-        type: 2}
-      propertyPath: menuSceneName
-      value: Menu
-      objectReference: {fileID: 0}
-    - target: {fileID: 82560041834200264, guid: 223d4199b5dfecc4899ce535c993e9b9,
-        type: 2}
-      propertyPath: OutputAudioMixerGroup
-      value: 
-      objectReference: {fileID: 24300002, guid: d2a17135b95e3584497d7a5424475da0,
-        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 223d4199b5dfecc4899ce535c993e9b9, type: 2}
   m_IsPrefabParent: 0

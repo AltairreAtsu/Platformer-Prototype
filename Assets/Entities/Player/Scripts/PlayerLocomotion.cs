@@ -2,16 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu (fileName = "Player Locomotion", menuName ="Platformer/PlayerController/PlayerLocomotion")]
 public class PlayerLocomotion : MonoBehaviour {
-
-	[SerializeField] private SpriteRenderer glideSpriteRender;
+	#region Injected Dependencies
+	[Header ("Dependencies")]
+	[SerializeField] private PlayerController playerController;
+	[SerializeField] private PlayerSettings playerSettings;
+	[SerializeField] private PlayerInput userInput;
+	[Header("Events")]
+	[SerializeField] private GameEvent jumpEvent;
+	[SerializeField] private GameEvent dashEvent;
+	[SerializeField] private GameEvent startGlideEvent;
+	[SerializeField] private GameEvent stopGlideEvent;
 
 	private Rigidbody2D rigidbody2d;
 
-	private PlayerController playerController;
-	private PlayerSettings playerSettings;
-	private PlayerInput userInput;
-
+	#endregion
+	#region State Variables
 	private bool gliding = false;
 	private float glideBreakTime = 0f;
 
@@ -22,7 +29,8 @@ public class PlayerLocomotion : MonoBehaviour {
 	private float climbBreakTime = 0f;
 
 	private float lastDashTime = 0f;
-
+	#endregion
+	#region Properties
 	public float ClimbBreakTime
 	{
 		get { return climbBreakTime; }
@@ -31,22 +39,17 @@ public class PlayerLocomotion : MonoBehaviour {
 	{
 		get { return gliding; }
 	}
-
-	#region Events
-	public delegate void PlayerEvent();
-	
-	public event PlayerEvent jumpEvent;
-	public event PlayerEvent dashEvent;
-	public event PlayerEvent glideEvent;
-
 	#endregion
 
 	private void Start()
 	{
-		playerController = GetComponent<PlayerController>();
-		userInput = GetComponent<PlayerInput>();
 		rigidbody2d = GetComponent<Rigidbody2D>();
-		playerSettings = playerController.PlayerSettings;
+		lastDashTime = 0;
+		lastJumpTime = 0;
+		climbBreakTime = 0;
+		glideBreakTime = 0;
+		ResetJumps();
+		gliding = false;
 	}
 
 	#region Movement Methods
@@ -58,18 +61,20 @@ public class PlayerLocomotion : MonoBehaviour {
 	{
 		rigidbody2d.AddForce(new Vector2(0f, userInput.VerticalThrow * speed * Time.deltaTime));
 	}
+	#endregion
 
 	public void Dash()
 	{
 		var dashIOnCooldown = !(Time.time - lastDashTime > playerSettings.DashCooldownSeconds);
 		if (!userInput.DoDash || dashIOnCooldown) { return; }
 
-		if (dashEvent != null) { dashEvent(); }
+		dashEvent.Raise();
 
 		rigidbody2d.AddForce(playerSettings.DashVector * playerController.GetScaler());
 		lastDashTime = Time.time;
 	}
-
+	
+	#region Glide Methods
 	public void UpdateGlide()
 	{
 		var glideIsOnCooldown = Time.time - glideBreakTime < playerSettings.GlideBreakCoolDownSeconds;
@@ -83,22 +88,25 @@ public class PlayerLocomotion : MonoBehaviour {
 			StopGliding();
 		}
 	}
+
 	public void StartGliding()
 	{
 		// TODO seperate glide Visuals from glide logic
-		if (glideEvent != null) { glideEvent(); }
+		startGlideEvent.Raise();
 		gliding = true;
 		playerController.SetGravityScale(playerSettings.GlidingGravity);
-		glideSpriteRender.enabled = true;
 	}
+
 	public void StopGliding()
 	{
 		gliding = false;
 		playerController.SetGravityToOriginal();
-		glideSpriteRender.enabled = false;
+		stopGlideEvent.Raise();
 		glideBreakTime = Time.time;
 	}
+	#endregion
 
+	#region Jump Methods
 	public void AirJump(Vector2 jumpForce)
 	{
 		if (!userInput.DoJump) { return; }
@@ -123,6 +131,7 @@ public class PlayerLocomotion : MonoBehaviour {
 		rigidbody2d.velocity = new Vector2(rigidbody2d.velocity.x, 0f);
 		Jump(jumpForce);
 	}
+
 	public void WallJump(Vector2 jumpForce)
 	{
 		if (!userInput.DoJump) { return; }
@@ -132,26 +141,26 @@ public class PlayerLocomotion : MonoBehaviour {
 		playerController.ResetConstraints();
 		playerController.SetGravityToOriginal();
 
-		// Inverts Scaler to apply force in opposite direction
 		var appliedJumpForce = new Vector2(jumpForce.x * (playerController.GetInvertedScaler()), jumpForce.y);
 		Jump(appliedJumpForce);
 	}
+
 	public void Jump(Vector2 jumpForce)
 	{
 		if (!userInput.DoJump) { return; }
 
-		if (jumpEvent != null) { jumpEvent(); }
+		jumpEvent.Raise();
 
 		usedFirstJump = true;
 		lastJumpTime = Time.time;
 
 		rigidbody2d.AddForce(jumpForce);
 	}
-	#endregion
 
 	public void ResetJumps()
 	{
 		usedFirstJump = false;
 		usedDoubleJump = false;
 	}
+#endregion
 }

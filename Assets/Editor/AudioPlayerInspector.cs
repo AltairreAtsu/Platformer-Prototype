@@ -76,7 +76,7 @@ public class AudioPlayerInspector : Editor {
 
 		serializedObject.ApplyModifiedProperties();
 
-		if (EditorGUILayout.DropdownButton(testButtonContent, FocusType.Passive))
+		if (GUILayout.Button("Play Test Sound"))
 		{
 			if (!TestSource)
 			{

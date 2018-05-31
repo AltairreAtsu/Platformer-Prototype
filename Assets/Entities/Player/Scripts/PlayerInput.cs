@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerInput : MonoBehaviour {
+	#region Internal variables
 	private float horizontalThrow = 0f;
 	private float verticalThrow = 0f;
 
@@ -11,7 +12,8 @@ public class PlayerInput : MonoBehaviour {
 	private bool dash = false;
 	private bool glide = false;
 	private bool attack = false;
-
+	#endregion
+	#region Properties
 	public float HorizontalThrow
 	{
 		get { return horizontalThrow; }
@@ -36,6 +38,7 @@ public class PlayerInput : MonoBehaviour {
 	{
 		get { return attack; }
 	}
+	#endregion
 
 	private void Update()
 	{

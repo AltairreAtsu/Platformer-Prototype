@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MenuAudio : MonoBehaviour {
-	[SerializeField] private AudioClip defaultClickSound;
-	[SerializeField] private AudioClip playClickSound;
-	[SerializeField] private AudioClip quitClickSound;
+	[SerializeField] StringAudioClipDictionary UISoundLibrary;
 
 	[SerializeField] private AudioClip hoverSound;
 
@@ -22,24 +20,15 @@ public class MenuAudio : MonoBehaviour {
 		// TODO: Find some way to stop the Menu from calling the Unity Event when it's value is changed in code.
 		if (audioSource == null) { return;  }
 
-		switch (buttonName)
+		AudioClip clip = null;
+		UISoundLibrary.TryGetValue(buttonName, out clip);
+
+		if(clip == null)
 		{
-			case "Play":
-				audioSource.Stop();
-				audioSource.clip = playClickSound;
-				audioSource.Play();
-				break;
-			case "Quit":
-				audioSource.Stop();
-				audioSource.clip = quitClickSound;
-				audioSource.Play();
-				break;
-			default:
-				audioSource.Stop();
-				audioSource.clip = defaultClickSound;
-				audioSource.Play();
-				break;
+			Debug.LogWarning("Could not find Audio Clip at provided key: " + buttonName);
 		}
+
+		audioSource.PlayOneShot(clip);
 	}
 
 	public void PlayHoverSound()

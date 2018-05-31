@@ -10,69 +10,92 @@ public class PlayerController : MonoBehaviour {
 	private PlayerMovementState Climbing;
 	private PlayerMovementState currentState;
 	#endregion
-
+	#region Scriptable Objects
 	[SerializeField] private PlayerSettings playerSettings;
-	[SerializeField] private Checkpoint checkpoint;
-
+	[SerializeField] private PlayerLocomotion playerLocomotion;
+	#endregion
+	[Space]
+	#region Serialized Fields
 	[SerializeField] private Transform attackCheckPoint;
-	[SerializeField] private Vector2 attackDetectionBoxSize;
-	[SerializeField] private LayerMask whatIsEnemy;
-	[SerializeField] private float damageToDeal;
-	[SerializeField] private float attackCooldownInSeconds;
+	[SerializeField] private Checkpoint checkpoint;
+	[Header ("Events")]
+	[SerializeField] private GameEvent attackEvent;
+	[SerializeField] private GameEvent footStepEvent;
+	[SerializeField] private GameEvent climbEvent;
+	[SerializeField] private GameLandEvent landEvent;
+	#endregion
 
-	private float lastAttackTime;
-
+	#region Dependencies
 	private IDamagable healthScript;
 	private PlayerCollisionHandler collisionHandler;
 	private PlayerInput userInput;
-	private PlayerLocomotion playerLocomotion;
-	private PhysicsMaterial2D groundMaterial;
+	private Tilemap foregroundTileMap;
+	#endregion
+	#region State Variables
+	private PhysicsMaterial2D lastTouchedGroundMaterial;
+	private float lastAttackTime;
 	private bool facingRight = true;
 	private bool isDead = false;
-
-	private Tilemap foregroundTileMap;
-
+	#endregion
 	#region Properties
-	public Animator Animator { get; private set; }
-	public Rigidbody2D RigidBody2d { get; private set; }
+	public Animator Animator
+	{
+		get;
+		private set;
+	}
+	public Rigidbody2D RigidBody2d
+	{
+		get;
+		private set;
+	}
+
+	public PlayerSettings PlayerSettings
+	{
+		get { return playerSettings; }
+	}
+
 	public bool FacingRight
 	{
 		get { return facingRight; }
 		set { facingRight = value; }
 	}
-	public PlayerSettings PlayerSettings { get { return playerSettings; } }
 	#endregion
 
-	public delegate void PlayerEvent();
-	public delegate void PlayerLandEvent(PhysicsMaterial2D material);
-
-	public event PlayerEvent attackEvent;
-	public event PlayerLandEvent LandEvent;
-
+	#region StartUp Methods
 	private void Start ()
 	{
-		Animator = GetComponent<Animator>();
-		RigidBody2d = GetComponent<Rigidbody2D>();
-		playerLocomotion = GetComponent<PlayerLocomotion>();
-		userInput = GetComponent<PlayerInput>();
-
-		collisionHandler = GetComponentInChildren<PlayerCollisionHandler>();
-		collisionHandler.enemyCollisionEvent += TakeDamage;
-
-		healthScript = GetComponent<IDamagable>();
-
-		foregroundTileMap = GameObject.FindWithTag("Foreground").GetComponent<Tilemap>();
-
-		Grounded = new GroundedState(this, playerLocomotion, playerSettings);
-		Airborne = new AirborneState(this, playerLocomotion, playerSettings);
-		Climbing = new ClimbingState(this, playerLocomotion, playerSettings);
-
-		playerSettings.GroundCheckPoint = transform.Find("GroundCheck");
-		playerSettings.WallCheckPoint = transform.Find("WallCheck");
-		RigidBody2d.gravityScale = playerSettings.DefaultGravityScale;
+		FindDependencies();
+		IntializeDependencyValues();
+		InitializeStates();
 
 		currentState = Grounded;
 	}
+
+	private void FindDependencies()
+	{
+		Animator = GetComponent<Animator>();
+		RigidBody2d = GetComponent<Rigidbody2D>();
+		userInput = GetComponent<PlayerInput>();
+		collisionHandler = GetComponentInChildren<PlayerCollisionHandler>();
+		foregroundTileMap = GameObject.FindWithTag("Foreground").GetComponent<Tilemap>();
+		healthScript = GetComponent<IDamagable>();
+	}
+
+	private void IntializeDependencyValues()
+	{
+		playerSettings.GroundCheckPoint = transform.Find("GroundCheck");
+		playerSettings.WallCheckPoint = transform.Find("WallCheck");
+		RigidBody2d.gravityScale = playerSettings.DefaultGravityScale;
+		collisionHandler.enemyCollisionEvent += TakeDamage;
+	}
+
+	private void InitializeStates()
+	{
+		Grounded = new GroundedState(this, playerLocomotion, playerSettings);
+		Airborne = new AirborneState(this, playerLocomotion, playerSettings);
+		Climbing = new ClimbingState(this, playerLocomotion, playerSettings);
+	}
+	#endregion
 
 	private void FixedUpdate ()
 	{
@@ -90,27 +113,7 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private bool FellOutOfWorld()
-	{
-		return (transform.position.y < playerSettings.WorldBottomThreshold);
-	}
-
-	private void Flip()
-	{
-		transform.localScale = new Vector3(transform.localScale.x * -1,
-												transform.localScale.y,
-												transform.localScale.z);
-	}
-
-	public float GetScaler()
-	{
-		return (facingRight)? 1 : -1;
-	}
-	public float GetInvertedScaler()
-	{
-		return (facingRight) ? -1 : 1;
-	}
-
+	#region World Interaction and Detection
 	public bool IsGrippingWall()
 	{
 		if(Time.time - playerLocomotion.ClimbBreakTime < playerSettings.WallBreakCooldown) { return false;  }
@@ -138,7 +141,7 @@ public class PlayerController : MonoBehaviour {
 
 		if (groundColliders.Length > 0)
 		{
-			groundMaterial = groundColliders[0].sharedMaterial;
+			lastTouchedGroundMaterial = groundColliders[0].sharedMaterial;
 			return true;
 		}
 		return false;
@@ -154,7 +157,9 @@ public class PlayerController : MonoBehaviour {
 		var facingVector = transform.right * .2f;
 		return foregroundTileMap.GetTile(Vector3Int.FloorToInt(playerSettings.WallCheckPoint.position + facingVector));
 	}
+	#endregion
 
+	#region Direct Transform Modifiers
 	public void Teleport (Vector3 positionTo)
 	{
 		transform.position = positionTo;
@@ -175,13 +180,15 @@ public class PlayerController : MonoBehaviour {
 			new Vector3(transform.position.x - distanceToWall, transform.position.y, transform.position.z);
 
 	}
+	#endregion
 
+	#region Combat Methods
 	public void Attack()
 	{
-		if (!userInput.DoAttack || Time.time - lastAttackTime < attackCooldownInSeconds) { return; }
+		if (!userInput.DoAttack || Time.time - lastAttackTime < playerSettings.AttackCooldownInSeconds) { return; }
 		
-		var colliders = Physics2D.OverlapBoxAll(attackCheckPoint.position, attackDetectionBoxSize, 0f, whatIsEnemy);
-		if (attackEvent != null) { attackEvent(); }
+		var colliders = Physics2D.OverlapBoxAll(attackCheckPoint.position, playerSettings.AttackDetectionBoxSize, 0f, playerSettings.WhatIsEnemy);
+		attackEvent.Raise();
 		if (colliders == null || colliders.Length == 0 ) { return; }
 		
 		for(int i = 0; i < colliders.Length; i++)
@@ -190,7 +197,7 @@ public class PlayerController : MonoBehaviour {
 		
 			if (damagableEntity != null)
 			{
-				damagableEntity.Damage(damageToDeal, transform);
+				damagableEntity.Damage(playerSettings.BaseAttackDamage, transform);
 			}
 		}
 
@@ -201,15 +208,18 @@ public class PlayerController : MonoBehaviour {
 	{
 		healthScript.Damage(damage, damageDealer);
 	}
+	#endregion
 
-	public void SetCollidersActiveState(bool collidersActive)
+	#region Audio Wrapper Methods
+	public void RaiseFootStepEvent()
 	{
-		var colliders = GetComponentsInChildren<Collider2D>();
-		for(int i = 0; i < colliders.Length; i++)
-		{
-			colliders[i].enabled = collidersActive;
-		}
+		footStepEvent.Raise();
 	}
+	public void RaiseClimbEvent()
+	{
+		climbEvent.Raise();
+	}
+	#endregion
 
 	#region Physics Functions
 	public void SetBothConstraints()
@@ -217,38 +227,31 @@ public class PlayerController : MonoBehaviour {
 		RigidBody2d.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
 		return;
 	}
+
 	public void ResetConstraints()
 	{
 		RigidBody2d.constraints = RigidbodyConstraints2D.FreezeRotation;
 	}
+
 	public void SetGravityScale(float gravityScale)
 	{
 		RigidBody2d.gravityScale = gravityScale;
 	}
+
 	public void SetGravityToOriginal()
 	{
 		RigidBody2d.gravityScale = playerSettings.DefaultGravityScale;
 	}
+
+	public void SetCollidersActiveState(bool collidersActive)
+	{
+		var colliders = GetComponentsInChildren<Collider2D>();
+		for (int i = 0; i < colliders.Length; i++)
+		{
+			colliders[i].enabled = collidersActive;
+		}
+	}
 	#endregion
-
-	public void CheckCharacterFlip()
-	{
-		if (userInput.HorizontalThrow < 0 && facingRight)
-		{
-			facingRight = false;
-			Flip();
-		}
-		else if (userInput.HorizontalThrow > 0 && !facingRight)
-		{
-			facingRight = true;
-			Flip();
-		}
-	}
-
-	public void SetCheckPoint(Checkpoint checkpoint)
-	{
-		this.checkpoint = checkpoint;
-	}
 
 	#region Transitions
 	public void TransitionGroundToAir()
@@ -266,7 +269,7 @@ public class PlayerController : MonoBehaviour {
 		if (playerLocomotion.Gliding) playerLocomotion.StopGliding();
 
 		Animator.SetBool("AirBorne", false);
-		if (LandEvent != null) { LandEvent(groundMaterial); }
+		landEvent.Raise(lastTouchedGroundMaterial);
 	}
 	public void TransitionGroundToClimb()
 	{
@@ -296,6 +299,49 @@ public class PlayerController : MonoBehaviour {
 		currentState.EnterState();
 		Animator.SetBool("AirBorne", true);
 		Animator.SetBool("Climbing", false);
+	}
+	#endregion
+
+	#region Utility Methods
+	//TODO consider moving upstream to Entity Class
+	private void Flip()
+	{
+		transform.localScale = new Vector3(transform.localScale.x * -1,
+												transform.localScale.y,
+												transform.localScale.z);
+	}
+	public void CheckCharacterFlip()
+	{
+		if (userInput.HorizontalThrow < 0 && facingRight)
+		{
+			facingRight = false;
+			Flip();
+		}
+		else if (userInput.HorizontalThrow > 0 && !facingRight)
+		{
+			facingRight = true;
+			Flip();
+		}
+	}
+
+	public void SetCheckPoint(Checkpoint checkpoint)
+	{
+		this.checkpoint = checkpoint;
+	}
+
+	public float GetScaler()
+	{
+		return (facingRight) ? 1 : -1;
+	}
+	public float GetInvertedScaler()
+	{
+		return (facingRight) ? -1 : 1;
+	}
+
+	//TODO consider moving upstream to Entity Class
+	private bool FellOutOfWorld()
+	{
+		return (transform.position.y < playerSettings.WorldBottomThreshold);
 	}
 	#endregion
 }

@@ -6,10 +6,10 @@ using UnityEngine;
 public class StaticHealth : MonoBehaviour, IDamagable
 {
 	[SerializeField] protected HealthTemplate template;
+	[SerializeField] protected AudioSource hurtSoundSource;
 
 	public EventHandler DamageEvent { get; set; }
 
-	protected AudioSource hurtSoundSource;
 	private Coroutine deathCorounte;
 	private IDamageVisualize graphicsComponent;
 	private VFXManager vfxManager;
@@ -19,8 +19,9 @@ public class StaticHealth : MonoBehaviour, IDamagable
 
 	public virtual void Start()
 	{
-		hurtSoundSource = GetComponent<AudioSource>();
 		vfxManager = GameObject.FindGameObjectWithTag("VFX Manager").GetComponent<VFXManager>();
+		graphicsComponent = GetComponent<IDamageVisualize>();
+
 		currentHealth = template.MaxHealth;
 	}
 

@@ -80,7 +80,6 @@ public class Opposum : MonoBehaviour {
 		}
 		else
 		{
-			Debug.Log("Running!");
 			chasingPlayer = false;
 			return Patrol();
 		}

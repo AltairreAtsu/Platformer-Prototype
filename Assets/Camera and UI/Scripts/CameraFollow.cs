@@ -15,8 +15,6 @@ public class CameraFollow : MonoBehaviour {
 		differentialVector = target.position - transform.position;
 
 		var playerHealth = target.GetComponent<PlayerHealth>();
-		playerHealth.respawnEvent += StartFollowingPlayer;
-		playerHealth.dieEvent += StopFollowingPlayer;
 	}
 	
 	private void Update ()

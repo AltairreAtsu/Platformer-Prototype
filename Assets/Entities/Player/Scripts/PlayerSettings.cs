@@ -35,6 +35,12 @@ public class PlayerSettings : ScriptableObject {
 	[SerializeField] private Vector2 dashVector = new Vector2(600, 0f);
 	[SerializeField] private float dashCoolDownSeconds = 0.5f;
 
+	[Header ("Attack variables")]
+	[SerializeField] private Vector2 attackDetectionBoxSize;
+	[SerializeField] private LayerMask whatIsEnemy;
+	[SerializeField] private float baseAttackDamage;
+	[SerializeField] private float attackCooldownInSeconds;
+
 	private Transform groundCheckPoint;
 	private Transform wallCheckPoint;
 
@@ -66,4 +72,9 @@ public class PlayerSettings : ScriptableObject {
 
 	public Vector2 DashVector { get { return dashVector; } }
 	public float DashCooldownSeconds { get { return dashCoolDownSeconds; } }
+
+	public Vector2 AttackDetectionBoxSize { get { return attackDetectionBoxSize; } }
+	public LayerMask WhatIsEnemy { get { return whatIsEnemy; } }
+	public float BaseAttackDamage { get { return baseAttackDamage; } }
+	public float AttackCooldownInSeconds { get { return attackCooldownInSeconds; } }
 }

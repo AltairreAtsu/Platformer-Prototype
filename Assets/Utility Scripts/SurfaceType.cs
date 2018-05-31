@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public interface ISurfaceType
 {
@@ -12,13 +13,13 @@ public interface ISurfaceType
 [Serializable]
 public struct TileSurface : ISurfaceType
 {
-	[SerializeField] public string name;
+	[SerializeField] public TileBase tile;
 	[SerializeField] public AudioPlayer walkAudioPlayer;
 	[SerializeField] public AudioPlayer landAudioPlayer;
 
-	public bool IsEqual(string name)
+	public bool IsEqual(TileBase tile)
 	{
-		return string.Equals(this.name, name);
+		return this.tile == tile; ;
 	}
 
 	public void PlayWalkSound(AudioSource audioSource)

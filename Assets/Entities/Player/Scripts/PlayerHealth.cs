@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class PlayerHealth : EntityHealth {
 	[SerializeField] private PlayerSettings playerSettings;
+	[Header ("Events")]
+	[SerializeField] private GameEvent playerDieEvent;
+	[SerializeField] private GameEvent playerRespawnEvent;
 
 	private PlayerController playerController;
 	private Animator animator;
-
-	public delegate void PlayerEvent();
-	public event PlayerEvent respawnEvent;
-	public event PlayerEvent dieEvent;
 
 	public override void Start()
 	{
@@ -22,7 +21,7 @@ public class PlayerHealth : EntityHealth {
 	private IEnumerator Respawn()
 	{
 		yield return new WaitForSeconds(playerSettings.RespawnTimeSeconds);
-		if (respawnEvent != null) { respawnEvent(); }
+		playerRespawnEvent.Raise();
 
 		animator.SetBool("Dead", false);
 		playerController.TeleportToCheckpoint();
@@ -33,7 +32,7 @@ public class PlayerHealth : EntityHealth {
 	public override void Die()
 	{
 		if(animator.GetBool("Dead")) { return; }
-		if (dieEvent != null) { dieEvent(); }
+		playerDieEvent.Raise();
 		template.DeathSoundPlayer.Play(hurtSoundSource);
 		animator.SetBool("Dead", true);
 		playerController.SetCollidersActiveState(false);

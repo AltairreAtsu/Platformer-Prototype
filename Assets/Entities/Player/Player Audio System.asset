@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efd06d6f9f6579044aebfe10a4a265d2, type: 3}
+  m_Name: Player Audio System
+  m_EditorClassIdentifier: 
+  attackSoundPlayer: {fileID: 11400000, guid: e66b0a17fb187ce48bab231c83fe032b, type: 2}
+  jumpSoundPlayer: {fileID: 11400000, guid: 5fc814882107f5b41854c7cf8cf95e81, type: 2}
+  dashSoundPlayer: {fileID: 11400000, guid: 6ec4a0c482492b0428b6fa8bc7cdc1ea, type: 2}
+  glideSoundPlayer: {fileID: 11400000, guid: ec31ec576f0875f4cb2d0183ea31da3c, type: 2}
+  playerSettings: {fileID: 11400000, guid: d655f61aa2d3a5a418e16e85695f85b9, type: 2}
+  surfaceManager: {fileID: 11400000, guid: fde6a5c6b5366e2439d062ca5b022dde, type: 2}

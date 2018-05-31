@@ -368,7 +368,7 @@ AnimationClip:
   m_Events:
   - time: 0.16666667
     functionName: StartLoadingLevel
-    data: SampleScene
+    data: New Tutorial Scene
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

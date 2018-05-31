@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Audio Player", menuName = "Platformer/Audio Player")]
 public class AudioPlayer : ScriptableObject
@@ -14,10 +12,8 @@ public class AudioPlayer : ScriptableObject
 
 	public void Play(AudioSource audioSource)
 	{
-//		audioSource.clip = (clips.Length > 1) ? clips[Random.Range(0, clips.Length - 1)] : clips[0];
 		audioSource.pitch = Random.Range(minPitch, maxPitch);
 		audioSource.volume = Random.Range(minVolume, maxVolume);
-//		audioSource.Play();
 
 		var clip = (clips.Length > 1) ? clips[Random.Range(0, clips.Length - 1)] : clips[0];
 		audioSource.PlayOneShot(clip);

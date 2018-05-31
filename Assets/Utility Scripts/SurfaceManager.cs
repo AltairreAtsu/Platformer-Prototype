@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [CreateAssetMenu (fileName ="New Surface Manager", menuName ="Platformer/Surface Manager")]
-public class SurfacManager : ScriptableObject {
+public class SurfaceManager : ScriptableObject {
 	[SerializeField] private TileSurface[] tileSurfaces;
 	[SerializeField] private PhysicsSurface[] physicsSurfaces;
 
-	public ISurfaceType GetSurface(string name)
+	public ISurfaceType GetSurface(TileBase tile)
 	{
 		for(int i = 0; i < tileSurfaces.Length; i++)
 		{
-			if (tileSurfaces[i].IsEqual(name))
+			if (tileSurfaces[i].IsEqual(tile))
 			{
 				return tileSurfaces[i];
 			}

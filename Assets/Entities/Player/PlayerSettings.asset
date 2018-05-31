@@ -37,3 +37,9 @@ MonoBehaviour:
     m_Bits: 256
   dashVector: {x: 600, y: 0}
   dashCoolDownSeconds: 0.5
+  attackDetectionBoxSize: {x: 1, y: 1}
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 1024
+  baseAttackDamage: 1
+  attackCooldownInSeconds: 0.5
