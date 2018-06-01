@@ -69,6 +69,7 @@ public class PlayerController : MonoBehaviour {
 		InitializeStates();
 
 		currentState = Grounded;
+		TeleportToCheckpoint();
 	}
 
 	private void FindDependencies()
@@ -167,6 +168,15 @@ public class PlayerController : MonoBehaviour {
 	public void TeleportToCheckpoint()
 	{
 		transform.position = checkpoint.transform.position;
+	}
+
+	public void SetTransformParent(Transform newParent)
+	{
+		transform.SetParent(newParent, true);
+	}
+	public void UnSetTransformParent()
+	{
+		transform.SetParent(null);
 	}
 
 	public void SnapToWall()
