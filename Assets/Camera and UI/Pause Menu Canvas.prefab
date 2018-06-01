@@ -635,8 +635,8 @@ MonoBehaviour:
           m_StringArgument: SlideOut
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: QuitOnFadeOut
+      - m_Target: {fileID: 114528866511328010}
+        m_MethodName: Resume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -647,8 +647,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 0}
-        m_MethodName: SetTrigger
-        m_Mode: 5
+        m_MethodName: StartFadeInQuit
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1025,7 +1025,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_MethodName: cacheLevelName
+        m_MethodName: StartFadeInLoad
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1035,9 +1035,9 @@ MonoBehaviour:
           m_StringArgument: Menu
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: SetTrigger
-        m_Mode: 5
+      - m_Target: {fileID: 114528866511328010}
+        m_MethodName: Resume
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1336,9 +1336,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6049092a2cf4bec408eb72000693359d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultClickSound: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
-  playClickSound: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
-  quitClickSound: {fileID: 8300000, guid: 130a177e727814a2ea78a886ab72213d, type: 3}
+  UISoundLibrary:
+    m_keys:
+    - 
+    - Quit
+    m_values:
+    - {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
+    - {fileID: 8300000, guid: 130a177e727814a2ea78a886ab72213d, type: 3}
   hoverSound: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
 --- !u!114 &114995875139072764
 MonoBehaviour:

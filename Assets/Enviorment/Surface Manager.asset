@@ -8,16 +8,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 8aa445d46e302af438391747174e4195, type: 3}
   m_Name: Surface Manager
-  m_EditorClassIdentifier: Assembly-CSharp::SurfaceManager
+  m_EditorClassIdentifier: 
   tileSurfaces:
-  - tile: {fileID: 11400000, guid: e16de10e007a18346b65981eb77ef1e8, type: 2}
-    walkAudioPlayer: {fileID: 11400000, guid: d75c70d3f179c1f4cacb0a998a6976dc, type: 2}
-    landAudioPlayer: {fileID: 11400000, guid: 3472d0d14734dfa4bb9ad41af24e127e, type: 2}
   - tile: {fileID: 11400000, guid: 3e48178d4f16b5e458282d73cb07f808, type: 2}
     walkAudioPlayer: {fileID: 11400000, guid: ef95d8677770c8744802301322f2c8d4, type: 2}
     landAudioPlayer: {fileID: 11400000, guid: 3c9af669dc0acc44ba514798017b4f85, type: 2}
+  - tile: {fileID: 11400000, guid: e16de10e007a18346b65981eb77ef1e8, type: 2}
+    walkAudioPlayer: {fileID: 11400000, guid: d75c70d3f179c1f4cacb0a998a6976dc, type: 2}
+    landAudioPlayer: {fileID: 11400000, guid: 3472d0d14734dfa4bb9ad41af24e127e, type: 2}
   physicsSurfaces:
   - material: {fileID: 6200000, guid: b3fec7858d190b74ba4daf440cc49664, type: 2}
     walkAudioPlayer: {fileID: 11400000, guid: 5fc814882107f5b41854c7cf8cf95e81, type: 2}
