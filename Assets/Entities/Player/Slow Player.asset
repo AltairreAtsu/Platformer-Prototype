@@ -9,12 +9,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e120ea35e9e1069459f46c7a25c75d8c, type: 3}
-  m_Name: PlayerSettings
+  m_Name: Slow Player
   m_EditorClassIdentifier: 
   defaultGravityScale: 1.9
   worldBottomThreshold: -5
   respawnTime: 1.5
-  maxGroundSpeed: 1000
+  maxGroundSpeed: 800
   groundCheckRadius: 0.05
   footstepspeedThreshold: 1
   groundedJumpForce: {x: 0, y: 1100}

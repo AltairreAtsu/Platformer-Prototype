@@ -11,10 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7eca1a2e909e94b8f15286793cfad7, type: 3}
   m_Name: Player Dash
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   clips:
   - {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
   minPitch: 0.6071654
   maxPitch: 1.7081485
-  maxVolume: 1
-  minVolume: 0.86403507
+  maxVolume: 0.33333334
+  minVolume: 0.19736841

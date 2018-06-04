@@ -11,10 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7eca1a2e909e94b8f15286793cfad7, type: 3}
   m_Name: Player Glide
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   clips:
   - {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
   minPitch: 0.45240352
   maxPitch: 0.9224342
-  maxVolume: 0.8888889
-  minVolume: 0.75292397
+  maxVolume: 0.5515871
+  minVolume: 0.41562238

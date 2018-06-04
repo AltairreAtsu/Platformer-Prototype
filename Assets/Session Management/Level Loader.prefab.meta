@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 752bdfec9baf14048b0bb4469193b8c1
+labels:
+- SceneSetup
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 100100000

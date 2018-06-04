@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu (fileName = "Player Locomotion", menuName ="Platformer/PlayerController/PlayerLocomotion")]
 public class PlayerLocomotion : MonoBehaviour {
 	#region Injected Dependencies
 	[Header ("Dependencies")]
 	[SerializeField] private PlayerController playerController;
 	[SerializeField] private PlayerSettings playerSettings;
 	[SerializeField] private PlayerInput userInput;
+	[Header("Constraints")]
+	[SerializeField] private bool canAirJump = false;
+	[SerializeField] private bool canDash = false;
+	[SerializeField] private bool canWallClimb = false;
+	[SerializeField] private bool canGlide = false;
 	[Header("Events")]
 	[SerializeField] private GameEvent jumpEvent;
 	[SerializeField] private GameEvent dashEvent;
@@ -66,7 +70,7 @@ public class PlayerLocomotion : MonoBehaviour {
 	public void Dash()
 	{
 		var dashIOnCooldown = !(Time.time - lastDashTime > playerSettings.DashCooldownSeconds);
-		if (!userInput.DoDash || dashIOnCooldown) { return; }
+		if (!canDash || !userInput.DoDash || dashIOnCooldown) { return; }
 
 		dashEvent.Raise();
 
@@ -77,6 +81,7 @@ public class PlayerLocomotion : MonoBehaviour {
 	#region Glide Methods
 	public void UpdateGlide()
 	{
+		if( !canGlide) { return; }
 		var glideIsOnCooldown = Time.time - glideBreakTime < playerSettings.GlideBreakCoolDownSeconds;
 
 		if (userInput.DoGlide && !gliding && !glideIsOnCooldown)
@@ -109,7 +114,7 @@ public class PlayerLocomotion : MonoBehaviour {
 	#region Jump Methods
 	public void AirJump(Vector2 jumpForce)
 	{
-		if (!userInput.DoJump) { return; }
+		if (!userInput.DoJump || !canAirJump) { return; }
 
 		var jumpIsOnCoolDown = Time.time - lastJumpTime < playerSettings.JumpCooldownSeconds;
 
@@ -162,5 +167,41 @@ public class PlayerLocomotion : MonoBehaviour {
 		usedFirstJump = false;
 		usedDoubleJump = false;
 	}
-#endregion
+	#endregion
+
+	#region Constraints
+	public void EnableAirJump()
+	{
+		canAirJump = true;
+	}
+	public void EnableDash()
+	{
+		canDash = true;
+	}
+	public void EnableWallClimb()
+	{
+		canWallClimb = true;
+	}
+	public void EnableGlide()
+	{
+		canGlide = true;
+	}
+
+	public bool CanAirJump()
+	{
+		return canAirJump;
+	}
+	public bool CanDash()
+	{
+		return canDash;
+	}
+	public bool CanWallClimb()
+	{
+		return canWallClimb;
+	}
+	public bool CanGlide()
+	{
+		return canGlide;
+	}
+	#endregion
 }

@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicManager: {fileID: 11400000, guid: c05bf6e35082aea49b3a5d121585e762, type: 2}
-  combatTrack: {fileID: 8300000, guid: f22c7df422ca6854aa49616e6124bc94, type: 3}
+  combatTrack: {fileID: 8300000, guid: 6cd6eb10fae6c8a4db5ac62497cfe2ee, type: 3}
   sceneChangeTrnasitionTime: 1
   sceneChangeTransitionSteps: 10
   cueChangeTrnasitionTime: 1

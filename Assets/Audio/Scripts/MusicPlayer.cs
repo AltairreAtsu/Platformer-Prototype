@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class MusicPlayer : MonoBehaviour
 {
@@ -9,17 +10,17 @@ public class MusicPlayer : MonoBehaviour
 
 	[SerializeField] private AudioClip combatTrack;
 	[SerializeField] private float sceneChangeTrnasitionTime = 3f;
-	[SerializeField] private float sceneChangeTransitionSteps = 10f;
 	[Space]
 	[SerializeField] private float cueChangeTrnasitionTime = 3f;
-	[SerializeField] private float cueChangeTransitionSteps = 10f;
 	[Space]
 	[SerializeField] private string menuSceneName;
 
 	public static MusicPlayer mainMusicPlayer;
 
 	private AudioSource audioSource;
+	private Coroutine transitionCoroutine;
 	private float originalAudioVolume;
+	
 
 	private void Start ()
 	{
@@ -30,6 +31,10 @@ public class MusicPlayer : MonoBehaviour
 		originalAudioVolume = audioSource.volume;
 
 		SceneManager.activeSceneChanged += OnSceneChange;
+		if(SceneManager.GetActiveScene().name != "Splashscreen")
+		{
+			audioSource.loop = true;
+		}
 
 		audioSource.clip = GetSceneClipFromManager();
 		if (!audioSource.isPlaying) { audioSource.Play(); }
@@ -46,30 +51,35 @@ public class MusicPlayer : MonoBehaviour
 		if(current.name == menuSceneName)
 		{
 			DoSharpTransition(SceneClip);
-			audioSource.loop = true;
 		}
 		else
 		{
-			StartTransition(SceneClip, sceneChangeTrnasitionTime, sceneChangeTransitionSteps);
+			StartTransition(SceneClip, sceneChangeTrnasitionTime);
 		}
 	}
 
 	public void TransitionToAggresive()
 	{
 		if (audioSource.clip == combatTrack) { return; }
-		StartTransition(combatTrack, cueChangeTrnasitionTime, cueChangeTransitionSteps);
+		StartTransition(combatTrack, cueChangeTrnasitionTime);
 	}
 	public void TransitionBackToDefault()
 	{
 		if (audioSource.clip == GetSceneClipFromManager()) { return; }
-		StartTransition(GetSceneClipFromManager(), cueChangeTrnasitionTime, cueChangeTransitionSteps);
+		StartTransition(GetSceneClipFromManager(), cueChangeTrnasitionTime);
 	}
 
-	public void StartTransition(AudioClip toClip, float time, float steps)
+	public void StartTransition(AudioClip toClip, float time)
 	{
-		StopAllCoroutines();
-		StartCoroutine(SmoothTransition(toClip, time, steps));
+		if (transitionCoroutine != null) { StopCoroutine(transitionCoroutine); }
+		transitionCoroutine = StartCoroutine(SmoothTransition(toClip, time));
 	}
+	public void StartTransition(AudioClip toClip, float time, float finalVolume)
+	{
+		if (transitionCoroutine != null) { StopCoroutine(transitionCoroutine); }
+		transitionCoroutine = StartCoroutine(SmoothTransition(toClip, time, finalVolume));
+	}
+
 
 	private void DoSharpTransition(AudioClip SceneClip)
 	{
@@ -77,26 +87,28 @@ public class MusicPlayer : MonoBehaviour
 		audioSource.clip = SceneClip;
 		audioSource.Play();
 	}
-	private IEnumerator SmoothTransition(AudioClip toClip, float time, float steps)
+	private IEnumerator SmoothTransition(AudioClip toClip, float time)
 	{
-		var waitTime = time / steps;
-		var incriment = originalAudioVolume / steps;
-
-		while (audioSource.volume != 0)
-		{
-			audioSource.volume = Mathf.Max(audioSource.volume - incriment, 0f);
-			yield return new WaitForSeconds(waitTime);
-		}
-
-		audioSource.Stop();
+		var tween = audioSource.DOFade(0f, time);
+		yield return tween.WaitForCompletion();
 		audioSource.clip = toClip;
 		audioSource.Play();
+		audioSource.DOFade(originalAudioVolume, time);
+		yield return tween.WaitForCompletion();
+	}
+	private IEnumerator SmoothTransition(AudioClip toClip, float time, float finalVolume)
+	{
+		var tween = audioSource.DOFade(0f, time);
+		yield return tween.WaitForCompletion();
+		audioSource.clip = toClip;
+		audioSource.Play();
+		audioSource.DOFade(finalVolume, time);
+		yield return tween.WaitForCompletion();
+	}
 
-		while (audioSource.volume != originalAudioVolume)
-		{
-			audioSource.volume = Mathf.Min(audioSource.volume + incriment, originalAudioVolume);
-			yield return new WaitForSeconds(waitTime);
-		}
+	public void DoTransitionToVolume(float volume, float durration)
+	{
+		var tween = audioSource.DOFade(volume, durration);
 	}
 
 	private void OnDisable()

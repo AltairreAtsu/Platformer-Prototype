@@ -346,7 +346,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1089629357179762}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5, y: 0.4765396, z: 0}
+  m_LocalPosition: {x: -5, y: 1.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4248760932251744}
@@ -952,8 +952,7 @@ MonoBehaviour:
   playerSettings: {fileID: 11400000, guid: d655f61aa2d3a5a418e16e85695f85b9, type: 2}
   playerLocomotion: {fileID: 114330918746781808}
   attackCheckPoint: {fileID: 4726229963699520}
-  checkpoint: {fileID: 114463690072798928, guid: 5ed8e3ca75f215a4b9ec0c7aa00f557c,
-    type: 2}
+  checkpoint: {fileID: 0}
   attackEvent: {fileID: 11400000, guid: 0886067e87b1cb44b90ad4e2ebd725d2, type: 2}
   footStepEvent: {fileID: 11400000, guid: 56ccd04c38517dd4c914d9a7e6aab1fd, type: 2}
   climbEvent: {fileID: 11400000, guid: 927b53b8e6756494d891e1091eb2059b, type: 2}

@@ -16,7 +16,11 @@ MonoBehaviour:
     - Splashscreen
     - Menu
     - New Tutorial Scene
+    - Sandbox
+    - Starting Village
     m_values:
     - {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
     - {fileID: 8300000, guid: 690ce7070f5c2c94c81a7a5101a6b0e7, type: 3}
     - {fileID: 8300000, guid: df66f964bb884394888353044e859c8c, type: 3}
+    - {fileID: 8300000, guid: 4e5e0106dcc746e4ca31617386c8bbfd, type: 3}
+    - {fileID: 8300000, guid: 4e5e0106dcc746e4ca31617386c8bbfd, type: 3}

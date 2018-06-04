@@ -5106,6 +5106,52 @@ Transform:
   m_PrefabParentObject: {fileID: 4923264134807328, guid: 1632d8fa476708a4baa315db993c2c7f,
     type: 2}
   m_PrefabInternal: {fileID: 225365471}
+--- !u!1001 &1772560562
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4793629655443946, guid: 0a8c2172c6774954cb9dc07a497718bb, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.5841277
+      objectReference: {fileID: 0}
+    - target: {fileID: 4793629655443946, guid: 0a8c2172c6774954cb9dc07a497718bb, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.4419404
+      objectReference: {fileID: 0}
+    - target: {fileID: 4793629655443946, guid: 0a8c2172c6774954cb9dc07a497718bb, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.12184694
+      objectReference: {fileID: 0}
+    - target: {fileID: 4793629655443946, guid: 0a8c2172c6774954cb9dc07a497718bb, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4793629655443946, guid: 0a8c2172c6774954cb9dc07a497718bb, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4793629655443946, guid: 0a8c2172c6774954cb9dc07a497718bb, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4793629655443946, guid: 0a8c2172c6774954cb9dc07a497718bb, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4793629655443946, guid: 0a8c2172c6774954cb9dc07a497718bb, type: 2}
+      propertyPath: m_RootOrder
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1321007935420608, guid: 0a8c2172c6774954cb9dc07a497718bb, type: 2}
+      propertyPath: m_Name
+      value: Post-process Volume
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 0a8c2172c6774954cb9dc07a497718bb, type: 2}
+  m_IsPrefabParent: 0
 --- !u!4 &1802181289 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4397339738129158, guid: d6cc7761241905e439c9c2c007bfe0cb,
