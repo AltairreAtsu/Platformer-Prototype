@@ -6,7 +6,7 @@ public class TriggerMusicToClipAndVolume : MonoBehaviour
 {
 	private MusicPlayer musicPlayer;
 
-	[SerializeField] private AudioClip clip;
+	[SerializeField] private string regionName;
 	[SerializeField] private float durration;
 	[SerializeField] private float volume;
 
@@ -21,7 +21,7 @@ public class TriggerMusicToClipAndVolume : MonoBehaviour
 
 		if (player)
 		{
-			musicPlayer.StartTransition(clip, durration, volume);
+			musicPlayer.DoRegionTransition(regionName, durration, volume);
 		}
 	}
 }

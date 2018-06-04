@@ -6,7 +6,7 @@ public class TriggerMusicToClip : MonoBehaviour
 {
 	private MusicPlayer musicPlayer;
 
-	[SerializeField] private AudioClip clip;
+	[SerializeField] private string regionName;
 	[SerializeField] private float durration;
 
 	private void Start()
@@ -20,7 +20,7 @@ public class TriggerMusicToClip : MonoBehaviour
 
 		if (player)
 		{
-			musicPlayer.StartTransition(clip, durration);
+			musicPlayer.DoRegionTransition(regionName, durration);
 		}
 	}
 }

@@ -20,6 +20,9 @@ public class MusicPlayer : MonoBehaviour
 	private AudioSource audioSource;
 	private Coroutine transitionCoroutine;
 	private float originalAudioVolume;
+
+	private TrackGroup sceneTrackGroup;
+	private string regionKey;
 	
 
 	private void Start ()
@@ -36,19 +39,26 @@ public class MusicPlayer : MonoBehaviour
 			audioSource.loop = true;
 		}
 
-		audioSource.clip = GetSceneClipFromManager();
+		SetTrackGroupFromManager();
+		audioSource.clip = sceneTrackGroup.GetDefaultClip();
 		if (!audioSource.isPlaying) { audioSource.Play(); }
 	}
 
-	private AudioClip GetSceneClipFromManager()
+
+	private void SetTrackGroupFromManager()
 	{
-		return musicManager.GetClipFromSceneName(SceneManager.GetActiveScene().name);
+		sceneTrackGroup = musicManager.GetTrackGroupFromScene(SceneManager.GetActiveScene().name);
+	}
+	private AudioClip GetRegionClipFromGroup()
+	{
+		return sceneTrackGroup.GetClipFromString(regionKey);
 	}
 
 	public void OnSceneChange(Scene previous, Scene current)
 	{
-		var SceneClip = GetSceneClipFromManager();
-		if(current.name == menuSceneName)
+		SetTrackGroupFromManager();
+		var SceneClip = sceneTrackGroup.GetDefaultClip();
+		if (current.name == menuSceneName)
 		{
 			DoSharpTransition(SceneClip);
 		}
@@ -65,8 +75,21 @@ public class MusicPlayer : MonoBehaviour
 	}
 	public void TransitionBackToDefault()
 	{
-		if (audioSource.clip == GetSceneClipFromManager()) { return; }
-		StartTransition(GetSceneClipFromManager(), cueChangeTrnasitionTime);
+		if (audioSource.clip == GetRegionClipFromGroup()) { return; }
+		StartTransition(GetRegionClipFromGroup(), cueChangeTrnasitionTime);
+	}
+
+	public void DoRegionTransition(string regionName, float durration)
+	{
+		if(regionKey == regionName) { return; }
+		regionKey = regionName;
+		StartTransition(GetRegionClipFromGroup(), durration);
+	}
+	public void DoRegionTransition(string regionName, float durration, float volume)
+	{
+		if (regionKey == regionName) { return; }
+		regionKey = regionName;
+		StartTransition(GetRegionClipFromGroup(), durration, volume);
 	}
 
 	public void StartTransition(AudioClip toClip, float time)

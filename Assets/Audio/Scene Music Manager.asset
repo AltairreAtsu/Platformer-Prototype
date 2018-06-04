@@ -19,8 +19,8 @@ MonoBehaviour:
     - Sandbox
     - Starting Village
     m_values:
-    - {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
-    - {fileID: 8300000, guid: 690ce7070f5c2c94c81a7a5101a6b0e7, type: 3}
-    - {fileID: 8300000, guid: df66f964bb884394888353044e859c8c, type: 3}
-    - {fileID: 8300000, guid: 4e5e0106dcc746e4ca31617386c8bbfd, type: 3}
-    - {fileID: 8300000, guid: 4e5e0106dcc746e4ca31617386c8bbfd, type: 3}
+    - {fileID: 11400000, guid: bbba3c19aca630f46a387e6fc4b2bd5c, type: 2}
+    - {fileID: 11400000, guid: 8851bcc134c3a614c831c33308754211, type: 2}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 11400000, guid: 0f7e63093bdbde24da84eae78eb69811, type: 2}

@@ -1,27 +1,20 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 
-
-
 [CreateAssetMenu (fileName = "New Scene Music Manager", menuName ="Platformer/SceneMusicManager")]
 public class SceneMusicManager : ScriptableObject {
-	[SerializeField] StringAudioClipDictionary SceneMusicLibrary;
+	[SerializeField] StringTrackGroupDictionary SceneMusicLibrary;
 
-	public AudioClip GetClipFromSceneName(string name)
+	public TrackGroup GetTrackGroupFromScene(string key)
 	{
-		AudioClip clip = null;
-		SceneMusicLibrary.TryGetValue(name, out clip);
-		if(clip == null)
-		{
-			Debug.LogError("Music Player Could not find clip for Scene: " + name);
-		}
-
-		return clip;
+		TrackGroup group;
+		SceneMusicLibrary.TryGetValue(key, out group);
+		if(group == null) { Debug.LogWarning("No Track group found for scene name " + key + " are you missing a key value pair?"); }
+		return group;
 	}
 }
 
-[Serializable]
-public class StringAudioClipDictionary : SerializableDictionary<string, AudioClip> { }
+[System.Serializable]
+public class StringTrackGroupDictionary : SerializableDictionary<string, TrackGroup> { }
 
