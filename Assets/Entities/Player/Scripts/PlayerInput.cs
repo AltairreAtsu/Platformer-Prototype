@@ -12,6 +12,8 @@ public class PlayerInput : MonoBehaviour {
 	private bool dash = false;
 	private bool glide = false;
 	private bool attack = false;
+
+	private bool hasControl = true;
 	#endregion
 	#region Properties
 	public float HorizontalThrow
@@ -42,14 +44,33 @@ public class PlayerInput : MonoBehaviour {
 
 	private void Update()
 	{
+		if (!hasControl) { return; }
 		jump = CrossPlatformInputManager.GetButtonDown("Jump");
 		dash = CrossPlatformInputManager.GetButtonDown("Dash");
 		glide = CrossPlatformInputManager.GetButton("Glide");
 		attack = CrossPlatformInputManager.GetButtonDown("Fire1");
 	}
 
-	void FixedUpdate () {
+	private void FixedUpdate ()
+	{
+		if (!hasControl) { return; }
 		horizontalThrow = CrossPlatformInputManager.GetAxis("Horizontal");
 		verticalThrow = CrossPlatformInputManager.GetAxis("Vertical");
 	}
+
+	public void SetHasControl(bool hasControl)
+	{
+		if (!hasControl)
+		{
+			horizontalThrow = 0;
+			verticalThrow = 0;
+		}
+
+		this.hasControl = hasControl;
+	}
+	public bool HasControl()
+	{
+		return hasControl;
+	}
+
 }

@@ -19,6 +19,8 @@ public class PlayerLocomotion : MonoBehaviour {
 	[SerializeField] private GameEvent startGlideEvent;
 	[SerializeField] private GameEvent stopGlideEvent;
 
+	public enum PlayerMoves { AirJump, Dash, WallClimb, Glide }
+
 	private Rigidbody2D rigidbody2d;
 
 	#endregion

@@ -75,6 +75,11 @@ public class MusicPlayer : MonoBehaviour
 	}
 	public void TransitionBackToDefault()
 	{
+		if (regionKey == null)
+		{
+			audioSource.clip = sceneTrackGroup.GetDefaultClip();
+			return;
+		}
 		if (audioSource.clip == GetRegionClipFromGroup()) { return; }
 		StartTransition(GetRegionClipFromGroup(), cueChangeTrnasitionTime);
 	}
